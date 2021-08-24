@@ -12,6 +12,14 @@ def style_rename():
 
     # importation du fichier de corresponance des styles
 
+    style_xls = pd.read_excel(
+            '/Users/ltexp1998/code/ltexp1998/zytholic_project/assets/style_convert.xlsx')
+
+    style_xls.to_csv("/Users/ltexp1998/code/ltexp1998/zytholic_project/raw_data/style_rename.csv")
+
+    style_csv = pd.read_csv(
+            '/Users/ltexp1998/code/ltexp1998/zytholic_project/raw_data/style_rename.csv')
+
     style_csv = pd.read_csv(
         '/Users/ltexp1998/code/ltexp1998/zytholic_project/raw_data/style_rename.csv'
     )
@@ -20,7 +28,7 @@ def style_rename():
     style_csv.drop('Original', 0, inplace=True)
 
     # creation d'un dict pour replace de la correspondance
-    
+
     style_dict = style_csv.to_dict()
     style_dict = style_dict['Unnamed: 1']
 
