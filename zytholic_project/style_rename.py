@@ -32,8 +32,10 @@ def style_rename():
     top_beer_info['style'].replace(style_dict, inplace=True)
 
     # exportation en csv des datasets modifiés
-    top_beer_info.to_csv('raw_data/top_beer_info_style_renamed.csv')
-    beers.to_csv('raw_data/beers_style_renamed.csv')
+    top_beer_info.to_csv('raw_data/top_beer_info_style_renamed.csv', 
+                         index=False)
+    beers.to_csv('raw_data/beers_style_renamed.csv',
+                 index=False)
     
 
 if __name__ == '__main__':
