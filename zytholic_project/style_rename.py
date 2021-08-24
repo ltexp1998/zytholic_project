@@ -16,10 +16,6 @@ def style_rename():
     
     # importation du fichier de corresponance des styles
     style_xls = pd.read_excel('assets/style_convert.xlsx')
-    #style_xls.to_csv("raw_data/style_rename.csv")
-
-    #style_csv = pd.read_csv('raw_data/style_rename.csv')
-    #style_xls.drop(columns='Unnamed: 0', inplace=True)
     style_xls.set_index('Dataset style', inplace=True)
     style_xls = style_xls.iloc[1:, :]
 
