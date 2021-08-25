@@ -1,1 +1,1 @@
- web: sh setup.sh && streamlit run zytholic_project.py && uvicorn /API/api:app --reload
+ web: sh setup.sh && streamlit run zytholic_project.py && uvicorn api:app --reload
