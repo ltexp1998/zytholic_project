@@ -41,11 +41,11 @@ st.sidebar.markdown(f"""
     """)
 
 # enter here the address of api
-# url = 'http://localhost:8501'
+url = 'https://zytholic-project.herokuapp.com/'
 
-# response = requests.get(url, '/test')
+response = requests.get(url, '/test')
 
-# st.sidebar.markdown(response)
+st.sidebar.markdown(response)
 
 #Style Selection
 
