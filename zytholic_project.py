@@ -1,5 +1,11 @@
 import streamlit as st
 import requests
+#import api
+import uvicorn
+
+
+
+#uvicorn.run("API.api:app", port=2809, reload=True)
 
 
 """# Zytholic_project web site"""
@@ -41,9 +47,11 @@ st.sidebar.markdown(f"""
     """)
 
 # enter here the address of api
-url = 'http://localhost:2809'
+url = 'http://localhost:2809/test?test=2'
 
-response = requests.get(url, '/test')
+response = requests.get(url).json()
+
+
 
 st.sidebar.markdown(response)
 

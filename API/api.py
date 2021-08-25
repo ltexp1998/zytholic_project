@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 import socket
 import sys
+import uvicorn
 
 app = FastAPI()
 
@@ -29,3 +30,7 @@ def index():
 @app.get("/test")
 def index(test):
     return { test*2 }
+
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=2809)
