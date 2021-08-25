@@ -27,5 +27,5 @@ def index():
     return {"Zytholic API : return brewery next to you": True}
 
 @app.get("/test")
-def index():
-    return {"Zytholic API : test": True}
+def index(test):
+    return { test*2 }
