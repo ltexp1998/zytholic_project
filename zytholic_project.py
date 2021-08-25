@@ -41,7 +41,7 @@ st.sidebar.markdown(f"""
     """)
 
 # enter here the address of api
-url = 'https://api:5000'
+url = 'http://localhost'
 
 response = requests.get(url, '/test')
 
