@@ -41,7 +41,7 @@ st.sidebar.markdown(f"""
     """)
 
 # enter here the address of api
-url = 'https://zytholic-project.herokuapp.com/'
+url = 'https://zytholic-project.herokuapp.com'
 
 response = requests.get(url, '/test')
 
