@@ -23,8 +23,6 @@ yapf
 # s3fs
 uvicorn
 fastapi
-# socket
-sys
 
 # utilities
 
