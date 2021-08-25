@@ -41,17 +41,13 @@ st.sidebar.markdown(f"""
     """)
 
 # enter here the address of api
-url = 'https://zytholic-project.herokuapp.com/'
+url = 'http://localhost:8501'
 
-response = requests.get(url)
+response = requests.get(url, '/test')
 
-prediction = response.json()
+st.sidebar.markdown(response)
 
-pred = prediction['prediction']
-
-pred
-
-# Style Selection
+#Style Selection
 
 st.markdown('<h2 class="border">Style Selection :</h2>',
             unsafe_allow_html=True)
