@@ -63,18 +63,13 @@ class BaseModel():
                                                         handle_unknown='ignore'))
         pipe_abv_rating = make_pipeline(StandardScaler())
         pipe_taste_features = make_pipeline(MinMaxScaler())
-        pipe_state = make_pipeline(
-            SimpleImputer(strategy='constant', fill_value=''),
-            OneHotEncoder(sparse=False, handle_unknown='ignore')
-        )
 
         # list of numeric columns for min-max scaler
         tastes_features = self.working_df.select_dtypes(np.number).columns[2:]
 
         # Combine the preprocessing pipelines
         preprocess = make_column_transformer(
-            (pipe_style_country, ['style', 'country']),
-            (pipe_state, ['state']),
+            (pipe_style_country, ['style']),
             (pipe_abv_rating, ['abv', 'ave rating']),
             (pipe_taste_features, tastes_features) 
         )
