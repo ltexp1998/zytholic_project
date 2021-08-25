@@ -41,7 +41,7 @@ st.sidebar.markdown(f"""
     """)
 
 # enter here the address of api
-url = 'https://fastapi:5000'
+url = 'https://api:5000'
 
 response = requests.get(url, '/test')
 
