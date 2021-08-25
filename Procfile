@@ -1,1 +1,1 @@
- web: sh setup.sh && streamlit run zytholic_project.py && uvicorn src.API.api:app --host=0.0.0.0 --port=$PORT
+ web: sh setup.sh && streamlit run zytholic_project.py && gunicorn -w 4 -k uvicorn.workers.UvicornWorker src.API.api:app
