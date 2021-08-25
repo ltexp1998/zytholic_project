@@ -1,7 +1,5 @@
 import streamlit as st
-
-import numpy as np
-import pandas as pd
+import requests
 
 
 """# Zytholic_project web site"""
@@ -41,6 +39,17 @@ st.sidebar.markdown(f"""
     ### International Bittering Units. How bitter is this beer?
     ### 0 water to 100+ super bitter.
     """)
+
+# enter here the address of api
+url = 'https://zytholic-project.herokuapp.com/'
+
+response = requests.get(url)
+
+prediction = response.json()
+
+pred = prediction['prediction']
+
+pred
 
 # Style Selection
 
