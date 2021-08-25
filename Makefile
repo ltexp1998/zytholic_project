@@ -60,7 +60,7 @@ pypi:
 # ----------------------------------
 
 streamlit:
-	-@streamlit run /front_end/zytholic_project.py
+	-@streamlit run zytholic_project.py
 
 heroku_login:
 	-@heroku login
