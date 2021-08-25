@@ -87,12 +87,12 @@ class BaseModel():
         self.X_train = X_train
         self.X_test = X_test
         self.preprocess.fit(X_train)
-        self.X = self.preprocess.transform(X_train)
-        self.y = self.preprocess.transform(X_test)
+        self.X_train_proc = self.preprocess.transform(X_train)
+        self.X_test_proc = self.preprocess.transform(X_test)
         return self
 
     def fit(self, clusts=20):
         """Actual fit using KMeans algorithm"""
         self.kmeans_fit = KMeans(n_clusters=clusts)
-        self.kmeans_fit.fit(self.X)
+        self.kmeans_fit.fit(self.X_train_proc)
         return self
