@@ -18,7 +18,6 @@ async def read_root():
         f"Hello world! From FastAPI running on Uvicorn. Using Python {version}"
     }
 
-
 @app.get("/10_prefered_beers")
 def beers(style):
     return {style}
