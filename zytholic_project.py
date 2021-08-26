@@ -1,21 +1,6 @@
 import streamlit as st
 import requests
 
-# CSS
-
-st.markdown(""" <style>
-#zytholic-project {text-align: center; font-size: 4em; text-transform: uppercase;}
-</style> """, unsafe_allow_html=True)
-
-st.markdown(""" <style>
-#help-yourself-to-discover-new-beer {text-align: center;font-size: 2em; padding-bottom: 2em;text-transform: capitalize;}
-</style> """, unsafe_allow_html=True)
-
-st.markdown(""" <style>
-.border { border : solid black 1px;
-padding : 0.5em }
-</style> """, unsafe_allow_html=True)
-
 st.markdown(""" <style>
 #style-proposition { border : solid black 1px;
 padding: 0.5em;
@@ -28,41 +13,50 @@ st.write(
 
 # Site title
 
-"""# zytholic project"""
+st.markdown('<h1 style="text-align: center; font-size: 4em; text-transform: uppercase;">zytholic project</h1>', unsafe_allow_html=True)
 
-"""## help yourself to discover new beer"""
-
+st.markdown('<h2 style="text-align: center;font-size: 2em; padding-bottom: 2em;text-transform: capitalize;">help yourself to discover new beer</h2>', unsafe_allow_html=True)
 
 # SIDE BAR
 
+# how to use the app
+st.sidebar.markdown('<h2 style="text-align: center; text-transform: uppercase; text-decoration: underline; color:purple">To use the app : </h2>', unsafe_allow_html=True)
+st.sidebar.markdown('<div style="font-weight: bold; text-decoration: underline;">Complite ONE of these feature :</div>', unsafe_allow_html=True)
+st.sidebar.markdown('<p style="padding-top: 1em">Enter the name of a beer</p>', unsafe_allow_html=True)
+st.sidebar.markdown('<p ><span style="font-weight: bold;">OR</span> Choose a Style (ex : IPA)</p>', unsafe_allow_html=True)
+st.sidebar.markdown('<p ><span style="font-weight: bold;">OR</span> Choose a Taste (ex : Hoppy)</p>', unsafe_allow_html=True)
+st.sidebar.markdown('<p ><span style="font-weight: bold;">OR</span> Choose ABV or IBU</p>', unsafe_allow_html=True)
+
+#legend
+st.sidebar.markdown('<h2 style="text-align: center; text-transform: uppercase; text-decoration: underline; color:purple">legend : </h2>', unsafe_allow_html=True)
+
+st.sidebar.markdown(f"""## ABV :""")
 st.sidebar.markdown(f"""
-    # Legend :
-    """)
+                    ## Alcohol by Volume. You know this one !
+                    ## Turns out how much alcohol in a beer really matters for style!
+                    """) #NE PAS MODIFIER LES RENVOIS DE LIGNE !!!!
+st.sidebar.markdown(f"""## IBU :""")
 
 st.sidebar.markdown(f"""
-    ## ABV :
-    """)
+    ## International Bittering Units. How bitter is this beer?
+    ## 0 water to 100+ super bitter.
+    """)  #NE PAS MODIFIER LES RENVOIS DE LIGNE !!!!
 
 st.sidebar.markdown(f"""
-    ### Alcohol by Volume. You know this one! Turns out how much alcohol in a beer really matters for style!
+    # Test du retour de l'API en mode "dummy"
     """)
 
-st.sidebar.markdown(f"""
-    ## IBU :
-    """)
+#Name of a beer
 
-st.sidebar.markdown(f"""
-    ### International Bittering Units. How bitter is this beer?
-    ### 0 water to 100+ super bitter.
-    """)
+st.markdown('<h2 style=" border : solid black 1px; padding : 0.5em ">Enter the name of a beer you like :</h2>',unsafe_allow_html=True)
 
-st.sidebar.markdown(f"""
-    ### Test du retour de l'API en mode "dummy"
-    """)
+beer_name = st.text_input('', '')
+
+st.markdown('    ')
 
 #Style Selection
 
-st.markdown('<h2 class="border">Style Selection : (Choose one)</h2>',unsafe_allow_html=True)
+st.markdown('<h2 style=" border : solid black 1px; padding : 0.5em ">Style Selection : (Choose one)</h2>',unsafe_allow_html=True)
 
 style = st.selectbox("", ["Make your style here","Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA","Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA"])
 
@@ -70,7 +64,7 @@ style = st.selectbox("", ["Make your style here","Stout", "Sour", "IPA", "Stout"
 
 st.markdown('    ')
 
-st.markdown('<h2 class="border">Taste Selection : (Choose one)</h2>',unsafe_allow_html=True)
+st.markdown('<h2 style=" border : solid black 1px; padding : 0.5em ">Taste Selection : (Choose one)</h2>',unsafe_allow_html=True)
 
 taste = st.selectbox("", ["Make your taste here","Fruit", "Malty", "Hoppy", "Salty", "Bitter", "Sweet", "Sugar", "Fruit", "Malty", "Hoppy", "Salty", "Bitter", "Sweet", "Sugar"])
 

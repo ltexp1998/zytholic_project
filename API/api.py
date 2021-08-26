@@ -20,6 +20,14 @@ app.add_middleware(
 async def read_root():
     return {"Zytholic-project API" : True}
 
+@app.get("/name_beer")
+def beers(name):
+    X = name
+    pipeline = joblib.load('model_name.joblib')
+    results_name = pipeline.predict(X)
+    return {results_name}
+
+
 @app.get("/10_prefered_beers")
 def beers(style):
     X = style
