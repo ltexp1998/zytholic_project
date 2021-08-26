@@ -92,7 +92,6 @@ class BaseModel():
         #     OneHotEncoder(sparse=False, handle_unknown='ignore')
         # )
         
-
         # list of numeric columns for min-max scaler
         tastes_features = self.working_df.select_dtypes(np.number).columns
 
@@ -101,7 +100,8 @@ class BaseModel():
             ## Uncomment pipe_state and activate
             #(pipe_state, ['state']),
             (pipe_style_country, ['style', 
-                                  #'country'
+                                  ##'country' # Deactivated beacause decreases recommendation
+                                  ## accuracy, as to many OHE variables relate to geography
                                   ]),
             (num_features_top, tastes_features) 
         )
@@ -126,8 +126,7 @@ class BaseModel():
         self.kmeans_fit.fit(self.X_train_proc)
         return self
     
-    
-    
+   
 def content(df, name, sim_matrix=None, n_recomm=10):
     """
     Uses similarity distance using sim_matrix to return the 10 closest beers
@@ -180,14 +179,12 @@ def evaluate_proximity(df,  n_recomm=10, tests=10, sim_matrix=None,):
                 value = mod.get(lab, 0)
                 mod[lab] = value + val
         
-
         # average for each style    
         style_result = np.array(percent).mean()
         results.append(style_result)
         
         val_counts = pd.Series(mod).sort_values(ascending=False).reset_index()
         mod_list.append(val_counts.iloc[0, 0])
-
     
     final_style = df_styles.reset_index()
     final_style['matching_percent'] = results
