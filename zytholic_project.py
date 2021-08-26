@@ -1,7 +1,5 @@
 import streamlit as st
 import requests
-#import api
-#import uvicorn
 
 # CSS
 
@@ -62,7 +60,7 @@ st.sidebar.markdown(f"""
 
 st.markdown('<h2 class="border">Style Selection : (Choose one)</h2>',unsafe_allow_html=True)
 
-style = st.selectbox("Style list", ["","Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA","Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA"])
+style = st.selectbox("", ["Make your style here","Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA","Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA"])
 
 # Taste Selection
 
@@ -70,7 +68,7 @@ st.markdown('    ')
 
 st.markdown('<h2 class="border">Taste Selection : (Choose one)</h2>',unsafe_allow_html=True)
 
-taste = st.selectbox("Taste list", ["","Fruit", "Malty", "Hoppy", "Salty", "Bitter", "Sweet", "Sugar", "Fruit", "Malty", "Hoppy", "Salty", "Bitter", "Sweet", "Sugar"])
+taste = st.selectbox("", ["Make your taste here","Fruit", "Malty", "Hoppy", "Salty", "Bitter", "Sweet", "Sugar", "Fruit", "Malty", "Hoppy", "Salty", "Bitter", "Sweet", "Sugar"])
 
 
 st.markdown('    ')
@@ -89,23 +87,23 @@ st.markdown('<h2 class="border2">Style proposition :</h2>', unsafe_allow_html=Tr
 
 # enter here the address of api
 
-url_local = 'http://localhost:2809'
-#url_distant = 'https://add_of_the_provider'
-
+#url_local = 'http://localhost:2809'
+#url_distant = 'http://localhost:5000'
+url_distant = 'https://api-zytholic-project-uq4l4l4m7a-ew.a.run.app'
 # test de l'endpoint "test" de l'API
 
-urltest = (f'{url_local}/test?test={option_ABV}')
+urltest = (f'{url_distant}/test?test={option_ABV}')
 response = requests.get(urltest).json()[0]
 st.sidebar.markdown(f'test : {response}')
 
 
 # test de l'endpoint "10_prefered_beers" de l'API
-url_ten_beer = (f'{url_local}/10_prefered_beers?style={style}')
+url_ten_beer = (f'{url_distant}/10_prefered_beers?style={style}')
 beer_result = requests.get(url_ten_beer).json()[0]
 st.sidebar.markdown(f'style : {beer_result}')
 
 # test de l'endpoint "taste" de l'API
-url_taste = (f'{url_local}/taste?taste={taste}')
+url_taste = (f'{url_distant}/taste?taste={taste}')
 taste_result = requests.get(url_taste).json()[0]
 st.sidebar.markdown(f'taste : {taste_result}')
 

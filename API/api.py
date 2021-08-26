@@ -1,22 +1,12 @@
 from fastapi import FastAPI
-import socket
-import sys
 import uvicorn
 
 app = FastAPI()
 
-hostname = socket.gethostname()
-version = f"{sys.version_info.major}.{sys.version_info.minor}"
-
 # define a root `/` endpoint
 @app.get("/")
 async def read_root():
-    return {
-        "name":"Zytholic-project",
-        "host": hostname,
-        "version":
-        f"Hello world! From FastAPI running on Uvicorn. Using Python {version}"
-    }
+    return {"Zytholic-project API" : True}
 
 @app.get("/10_prefered_beers")
 def beers(style):

@@ -23,7 +23,6 @@ yapf
 # s3fs
 uvicorn
 fastapi
-#gunicorn
 
 # utilities
 
