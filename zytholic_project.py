@@ -56,6 +56,10 @@ st.sidebar.markdown(f"""
     ### 0 water to 100+ super bitter.
     """)
 
+st.sidebar.markdown(f"""
+    ### Test du retour de l'API en mode "dummy"
+    """)
+
 #Style Selection
 
 st.markdown('<h2 class="border">Style Selection : (Choose one)</h2>',unsafe_allow_html=True)
