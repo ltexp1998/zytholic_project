@@ -27,15 +27,14 @@ class BaseModel():
         dftop = pd.read_csv("../raw_data/top_beer_info_style_renamed.csv")
 
         #read correspondance brewery
-        corres_xls = pd.read_excel('../assets/correspondance_breweryclean2.xlsx')
-        corres_xls.drop(columns='Unnamed: 0', inplace=True)
-        corres_xls.set_index(1, inplace=True)
+        corres_xls = pd.read_csv('../assets/matching_brewery_names.csv')
+        corres_xls.set_index('bbr', inplace=True)
         corres= corres_xls.to_dict()
 
         # Renames columns from brewery df to perform merge
         dfbrew = dfbrew.rename(columns={"name": "brewery",
                                         "id": "brewery_id"})
-        dfbrew['brewery'].replace(corres[0], inplace=True)
+        dfbrew['brewery'].replace(corres['top'], inplace=True)
 
         # Merge Beers and Breweries with Top-Information
         dfbrewb =  pd.merge(dfbeer,
@@ -59,12 +58,11 @@ class BaseModel():
         """
         
         # Get matching table for styles names and format it
-        style_xls = pd.read_excel('../assets/style_convert.xlsx')
-        style_xls.columns = style_xls.iloc[0, :]
-        style_xls = style_xls.iloc[1:, 1:]
+        style_csv = pd.read_csv('../assets/style_convert.csv')
+        style_csv = style_csv[['Converted', 'Simplified']]
 
         # creation of a dictionary to replace automatically
-        style_dict = style_xls.set_index('Converted').to_dict()
+        style_dict = style_csv.set_index('Converted').to_dict()
         style_dict = style_dict['Simplified']
         style_dict
 
