@@ -26,7 +26,7 @@ set_background('./assets/img/beer.png')
 
 # BACKGROUND IMAGE CREDIT ON HTML
 
-st.markdown('<h2 style="visibility : hidden">Image credit : https://pixabay.com/fr/users/stux-12364/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=422138"</h2>',unsafe_allow_html=True)
+st.markdown('<p style="visibility : hidden">Image credit : https://urlz.fr/gm4x"</p>', unsafe_allow_html=True)
 
 # CSS custom section
 
@@ -129,16 +129,16 @@ st.markdown('<p class="slide_title">IBU :</p>',
             unsafe_allow_html=True)
 option_IBU = st.slider('', 0, 100, 1)
 
-
-st.markdown('<h2 class="border2">Style proposition :</h2>', unsafe_allow_html=True)
-
-# TEST DU RETOUR API A SUPPRIMER
+st.markdown('<h2 class="border2">Proposition with your previous choice :</h2>', unsafe_allow_html=True)
 
 # enter here the address of api
 
 #url_local = 'http://localhost:2809'
 #url_distant = 'http://localhost:5000'
 url_distant = 'https://api-zytholic-project-uq4l4l4m7a-ew.a.run.app'
+
+
+# TEST DU RETOUR API A SUPPRIMER
 
 # test de l'endpoint "test" de l'API
 
@@ -155,13 +155,3 @@ st.sidebar.markdown(f'style : {beer_result}')
 url_taste = (f'{url_distant}/taste?taste={taste}')
 taste_result = requests.get(url_taste).json()[0]
 st.sidebar.markdown(f'taste : {taste_result}')
-
-# test de l'endpoint "brewery" de l'API
-# url_brewery = (f'{url_local}/taste?taste={brewery}')
-# response = requests.get(url_brewery)
-# st.sidebar.markdown(brewery)
-
-
-# BACKGROUND IMAGE CREDIT ON HTML
-
-st.markdown('<h2 style="visibility : hidden">Image credit : https://pixabay.com/fr/users/stux-12364/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=422138"</h2>',unsafe_allow_html=True)
