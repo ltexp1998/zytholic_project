@@ -53,9 +53,11 @@ st.markdown('<h1 class="title1">zytholic project</h1>', unsafe_allow_html=True)
 
 st.markdown('<h2 class="title2">help yourself to discover new beer</h2>', unsafe_allow_html=True)
 
+
 # SIDE BAR section
 
 # how to use the app
+
 st.sidebar.markdown('<h2 class="use_app">To use the app : </h2>', unsafe_allow_html=True)
 st.sidebar.markdown('<div class="bold_underline">Complite ONE of these feature :</div>', unsafe_allow_html=True)
 st.sidebar.markdown('<p style="padding-top: 1em"><span class="bold">Enter</span> the name of a beer</p>', unsafe_allow_html=True)
