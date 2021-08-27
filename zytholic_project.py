@@ -1,11 +1,25 @@
 import streamlit as st
 import requests
 
+#CSS
+
+CSS = """
+.stApp {
+    background: url(https://cdn.pixabay.com/photo/2014/08/19/22/58/beer-422138_960_720.jpg) 0 0 no-repeat;
+    background-size: cover;
+}
+.stSlider {text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white; }
+.css-2y0inq {color :white}
+.css-1cu04ak {background-color: white}
+"""
+st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
+
 st.markdown(""" <style>
-#style-proposition { border : solid black 1px;
+#style-proposition {text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white; border : solid white 1px;
 padding: 0.5em;
 padding-bottom : 25em}
-</style> """, unsafe_allow_html=True)
+</style> """,
+            unsafe_allow_html=True)
 
 st.write(
     '<style>div.row-widget.stRadio> div{display: flex; flex-flow: row; justify-content: center;}</style>',
@@ -13,19 +27,19 @@ st.write(
 
 # Site title
 
-st.markdown('<h1 style="text-align: center; font-size: 4em; text-transform: uppercase;">zytholic project</h1>', unsafe_allow_html=True)
+st.markdown('<h1 style="text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white; text-align: center; font-size: 4em; text-transform: uppercase;">zytholic project</h1>', unsafe_allow_html=True)
 
-st.markdown('<h2 style="text-align: center;font-size: 2em; padding-bottom: 2em;text-transform: capitalize;">help yourself to discover new beer</h2>', unsafe_allow_html=True)
+st.markdown('<h2 style="text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white; text-align: center;font-size: 2em; padding-bottom: 2em;text-transform: capitalize;">help yourself to discover new beer</h2>', unsafe_allow_html=True)
 
 # SIDE BAR
 
 # how to use the app
 st.sidebar.markdown('<h2 style="text-align: center; text-transform: uppercase; text-decoration: underline; color:purple">To use the app : </h2>', unsafe_allow_html=True)
-st.sidebar.markdown('<div style="font-weight: bold; text-decoration: underline;">Complite ONE of these feature :</div>', unsafe_allow_html=True)
-st.sidebar.markdown('<p style="padding-top: 1em">Enter the name of a beer</p>', unsafe_allow_html=True)
-st.sidebar.markdown('<p ><span style="font-weight: bold;">OR</span> Choose a Style (ex : IPA)</p>', unsafe_allow_html=True)
-st.sidebar.markdown('<p ><span style="font-weight: bold;">OR</span> Choose a Taste (ex : Hoppy)</p>', unsafe_allow_html=True)
-st.sidebar.markdown('<p ><span style="font-weight: bold;">OR</span> Choose ABV or IBU</p>', unsafe_allow_html=True)
+st.sidebar.markdown('<div style=" font-weight: bold; text-decoration: underline;">Complite ONE of these feature :</div>', unsafe_allow_html=True)
+st.sidebar.markdown('<p style=" padding-top: 1em">Enter the name of a beer</p>', unsafe_allow_html=True)
+st.sidebar.markdown('<p style=""><span style=" font-weight: bold;">OR</span> Choose a Style (ex : IPA)</p>', unsafe_allow_html=True)
+st.sidebar.markdown('<p style=""><span style="fcolor:black; ont-weight: bold;">OR</span> Choose a Taste (ex : Hoppy)</p>', unsafe_allow_html=True)
+st.sidebar.markdown('<p style=""><span style=" font-weight: bold;">OR</span> Choose ABV or IBU</p>', unsafe_allow_html=True)
 
 #legend
 st.sidebar.markdown('<h2 style="text-align: center; text-transform: uppercase; text-decoration: underline; color:purple">legend : </h2>', unsafe_allow_html=True)
@@ -48,7 +62,7 @@ st.sidebar.markdown(f"""
 
 #Name of a beer
 
-st.markdown('<h2 style=" border : solid black 1px; padding : 0.5em ">Enter the name of a beer you like :</h2>',unsafe_allow_html=True)
+st.markdown('<h2 style="text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white; border : solid white 1px; padding : 0.5em ">Enter the name of a beer you like :</h2>',unsafe_allow_html=True)
 
 beer_name = st.text_input('', '')
 
@@ -56,17 +70,17 @@ st.markdown('    ')
 
 #Style Selection
 
-st.markdown('<h2 style=" border : solid black 1px; padding : 0.5em ">Style Selection : (Choose one)</h2>',unsafe_allow_html=True)
+st.markdown('<h2 style="text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white; border : solid white 1px; padding : 0.5em ">Style Selection : (Choose one)</h2>',unsafe_allow_html=True)
 
-style = st.selectbox("", ["Make your style here","Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA","Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA"])
+style = st.selectbox("", ["Choose your style here","Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA","Stout", "Sour", "IPA", "Stout", "Sour", "IPA", "Stout", "Sour", "IPA"])
 
 # Taste Selection
 
 st.markdown('    ')
 
-st.markdown('<h2 style=" border : solid black 1px; padding : 0.5em ">Taste Selection : (Choose one)</h2>',unsafe_allow_html=True)
+st.markdown('<h2 style="text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white; border : solid white 1px; padding : 0.5em ">Taste Selection : (Choose one)</h2>',unsafe_allow_html=True)
 
-taste = st.selectbox("", ["Make your taste here","Fruit", "Malty", "Hoppy", "Salty", "Bitter", "Sweet", "Sugar", "Fruit", "Malty", "Hoppy", "Salty", "Bitter", "Sweet", "Sugar"])
+taste = st.selectbox("", ["Choose your taste here","Fruit", "Malty", "Hoppy", "Salty", "Bitter", "Sweet", "Sugar", "Fruit", "Malty", "Hoppy", "Salty", "Bitter", "Sweet", "Sugar"])
 
 
 st.markdown('    ')
@@ -75,11 +89,13 @@ st.markdown('    ')
 
 # ABV and IBU bar select
 
-option_ABV = st.slider('ABV : %/Vol', 0, 60, 1)
-st.markdown('    ')
+st.markdown('<p style ="text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white;">ABV : %/Vol</p>', unsafe_allow_html=True)
+option_ABV = st.slider('', 0, 60, 1)
 
-option_IBU = st.slider('IBU : ', 0, 100, 1)
-st.markdown('    ')
+st.markdown('<p style ="text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white;">IBU :</p>',
+            unsafe_allow_html=True)
+option_IBU = st.slider('', 0, 100, 1)
+
 
 st.markdown('<h2 class="border2">Style proposition :</h2>', unsafe_allow_html=True)
 
