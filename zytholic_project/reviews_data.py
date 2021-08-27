@@ -25,22 +25,20 @@ class BaseModelRev():
         pass
 
     def get_data(self):
-        """Merge data from Beers and Breweries using top-information as referenc"""
+        """Merge data from Beers and Breweries using top-information as reference"""
         dfbrew = pd.read_csv(
             "../raw_data/Beers_Breweries_and_Beer Reviews/breweries.csv")
         dfbeer = pd.read_csv("../raw_data/beers_style_renamed.csv")
         dftop = pd.read_csv("../raw_data/top_beer_info_style_renamed.csv")
 
         #read correspondance brewery
-        corres_xls = pd.read_excel(
-            '../assets/correspondance_breweryclean2.xlsx')
-        corres_xls.drop(columns='Unnamed: 0', inplace=True)
-        corres_xls.set_index(1, inplace=True)
+        corres_xls = pd.read_csv('../assets/matching_brewery_names.csv')
+        corres_xls.set_index('bbr', inplace=True)
         corres = corres_xls.to_dict()
 
         # Renames columns from brewery df to perform merge
         dfbrew = dfbrew.rename(columns={"name": "brewery", "id": "brewery_id"})
-        dfbrew['brewery'].replace(corres[0], inplace=True)
+        dfbrew['brewery'].replace(corres['top'], inplace=True)
 
         # Merge Beers and Breweries with Top-Information
         dfbrewb = pd.merge(dfbeer,
@@ -58,21 +56,53 @@ class BaseModelRev():
         working_df = dftopbrew.drop(['description', 'key', 'style key'],
                                     axis=1).drop_duplicates()
         working_df = working_df[working_df.retired == 'f']
-        working_df.shape
-        working_df['style'] = [
-            st.split(' - ')[0] for st in working_df['style']
-        ]
-        self.working_df = working_df
+        self.working_df = self.reformat_styles(working_df, ohe=True)
         return self
 
     """def get_data_rev(self):"""
-        #"""Merge data from Reviews and All the rest using id as referenc"""
-        #"""dfrev = pd.read_csv(
-            #"../raw_data/Beers_Breweries_and_Beer Reviews/reviews.csv")
+    #"""Merge data from Reviews and All the rest using id as referenc"""
+    #"""dfrev = pd.read_csv(
+    #"../raw_data/Beers_Breweries_and_Beer Reviews/reviews.csv")
 
-        #working_df = self.working_df.rename(columns={"id": "beer_id"})
+    #working_df = self.working_df.rename(columns={"id": "beer_id"})
 
-        #revdf = pd.merge(working_df,
-                         #dfrev[['brewery_id', 'brewery']],
-                         #how='left',
-                         #on=["beer_id"])"""
+    #revdf = pd.merge(working_df,
+    #dfrev[['brewery_id', 'brewery']],
+    #how='left',
+    #on=["beer_id"])"""
+
+    def reformat_styles(self, working_df, ohe=True):
+        """
+        Simplify the columns 'style' of an input DF
+        Converts various features insides style name to OHE features
+        """
+
+        # Get matching table for styles names and format it
+        style_csv = pd.read_csv('../assets/style_convert.csv')
+        style_csv = style_csv[['Converted', 'Simplified']]
+
+        # creation of a dictionary to replace automatically
+        style_dict = style_csv.set_index('Converted').to_dict()
+        style_dict = style_dict['Simplified']
+        style_dict
+
+        #styles_test = working_df[['style']].drop_duplicates()
+        working_df['simple_style'] = working_df['style'].replace(style_dict)
+
+        # One-Hot-Encoding of featrues_to_implement
+        features_to_implement = [
+            'milk', 'old', 'dark', 'wild', 'pale', 'red', 'imperial'
+        ]
+        if ohe:
+            for feat in features_to_implement:
+                working_df[feat] = [
+                    1 if feat in elm.lower() else 0
+                    for elm in working_df['style']
+                ]
+
+        working_df.rename(columns={
+            'style': 'original_style',
+            'simple_style': 'style'
+        },
+                          inplace=True)
+        return working_df
