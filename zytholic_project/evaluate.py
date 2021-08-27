@@ -2,6 +2,16 @@ import pandas as pd
 import numpy as np  
 from sklearn.metrics.pairwise import sigmoid_kernel, cosine_similarity, linear_kernel
 
+def get_name_index(name, df):
+    """From a name of a beer, find it index in the dataframe"""
+    temp = df.copy()
+    temp.reset_index(drop=True, inplace=True)
+    temp.reset_index(inplace=True)
+    index = temp.iloc[:,:4]
+    position = index[index.name == name]['index']
+    return position    
+    
+    
 def content(df, name, sim_matrix=None, n_recomm=10):
     """
     Uses similarity distance using sim_matrix to return the 10 closest beers
