@@ -4,9 +4,10 @@ from sklearn.metrics.pairwise import sigmoid_kernel, cosine_similarity, linear_k
 
 def get_name_index(name, df):
     """From a name of a beer, find it index in the dataframe"""
+    # Dataframe to get index of a given beer
     temp = df[['name']].copy()
-    temp.reset_index(drop=True, inplace=True)
-    index = temp.reset_index()
+    temp.reset_index(drop=True, inplace=True) # removes old index
+    index = temp.reset_index() # get lines numbers as index column
     position = index[index['name'] == name]['index']
     return position    
     
@@ -15,16 +16,10 @@ def get_recommendations(df, name, sim_matrix=None, n_recomm=10):
     """
     Uses similarity distance using sim_matrix to return the 10 closest beers
     to the "name" input inside the specified DF
-    """
+    """    
+    position = get_name_index(name, df)
     
-    # Dataframe to get index of a given beer
-    temp = df.copy()
-    temp.reset_index(drop=True, inplace=True)
-    temp.reset_index(inplace=True)
-    index = temp.iloc[:,:4]
-    
-    # Extract most similar beers
-    position = index[index.name == name]['index']
+    # Extract most similar beers after sorting
     score = sorted(
         list(enumerate(sim_matrix[position][0])),
         key=lambda x:x[1],reverse=True)
