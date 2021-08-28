@@ -1,6 +1,6 @@
 import pandas as pd
 from zytholic_project.base_model import BaseModel
-from zytholic_project.evaluate import content
+from zytholic_project.evaluate import get_recommendations
 from sklearn.metrics.pairwise import cosine_similarity, sigmoid_kernel,linear_kernel
 
 def check_name(name):
@@ -39,7 +39,7 @@ def get_most_similar_beers(name, n_beers=5, similarity='cosine'):
     elif similarity == 'linear':
         kernel = linear_kernel(model.X, model.X)
     
-    results = content(model.working_df, name, 
+    results = get_recommendations(model.working_df, name, 
                       sim_matrix=kernel, n_recomm=n_beers)
     results = results[['name', 'brewery', 'style', 'abv']]
     return results

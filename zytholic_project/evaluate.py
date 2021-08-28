@@ -4,15 +4,14 @@ from sklearn.metrics.pairwise import sigmoid_kernel, cosine_similarity, linear_k
 
 def get_name_index(name, df):
     """From a name of a beer, find it index in the dataframe"""
-    temp = df.copy()
+    temp = df[['name']].copy()
     temp.reset_index(drop=True, inplace=True)
-    temp.reset_index(inplace=True)
-    index = temp.iloc[:,:4]
-    position = index[index.name == name]['index']
+    index = temp.reset_index()
+    position = index[index['name'] == name]['index']
     return position    
     
     
-def content(df, name, sim_matrix=None, n_recomm=10):
+def get_recommendations(df, name, sim_matrix=None, n_recomm=10):
     """
     Uses similarity distance using sim_matrix to return the 10 closest beers
     to the "name" input inside the specified DF
@@ -54,7 +53,7 @@ def evaluate_proximity(df,  n_recomm=10, tests=10, sim_matrix=None,):
         mod = {}
         for name in samples:
             # calculate content based similarity for each sample
-            res = content(df, name, sim_matrix, n_recomm)
+            res = get_recommendations(df, name, sim_matrix, n_recomm)
             # Get percentage of matching style for each sample
             matching_percent = res[res['style'] == st].shape[0] / res.shape[0] * 100
             percent.append(matching_percent)
