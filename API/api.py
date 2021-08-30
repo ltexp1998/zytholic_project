@@ -24,11 +24,15 @@ async def read_root():
 
 @app.get("/name_beer")
 def beers(name):
+    """Enter a beer name, return most similar beers"""
     results_name = get_most_similar_beers(name)
     return results_name
 
 @app.get("/filter_abv_ibu")
 def filter(name, abv=None, ibu=None):
+    """Enter a beer name, maximum alcohol content wanted (ABV),
+    and maximum bitterness wanted (IBU):
+    return most similar beers"""
     results_name = get_most_similar_beers_ibu_abv(name, float(ibu), float(abv))
     return results_name
 
