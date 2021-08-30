@@ -9,8 +9,9 @@ def check_name(name):
     ----
     Returns whether or not the name is in the database
     """
-    beer_list = pd.read_csv('raw_data/top_beer_info_style_renamed.csv', 
-                            usecols=['name'])
+    beer_list = pd.read_csv(
+        'raw_data/top_beer_info_style_renamed.csv', 
+        usecols=['name'])
     beer_list = beer_list['name'].to_list()
     return name if name in beer_list else 'Invalid Name'
 
@@ -20,7 +21,7 @@ def get_most_similar_beers(name, n_beers=5, similarity='cosine'):
     Check that name is valid
     """
     if check_name(name) != name:
-        return None
+        return {'response': f'{name} is not a valid name'}
     
     # Import data, preprocess it
     # To extract for function and to be executed only once
@@ -42,7 +43,8 @@ def get_most_similar_beers(name, n_beers=5, similarity='cosine'):
     results = get_recommendations(model.working_df, name, 
                       sim_matrix=kernel, n_recomm=n_beers)
     results = results[['name', 'brewery', 'style', 'abv']]
-    return results
+    
+    return results.to_dict()
     
     
     

@@ -2,7 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import joblib
+import pandas as pd
 #import zytholic_project.style_rename
+from zytholic_project.apicall import get_most_similar_beers
 
 app = FastAPI()
 
@@ -22,13 +24,11 @@ async def read_root():
 
 @app.get("/name_beer")
 def beers(name):
-    X = name
-    pipeline = joblib.load('model_name.joblib')
-    results_name = pipeline.predict(X)
-    return {results_name}
+    results_name = get_most_similar_beers(name)
+    return results_name
 
 @app.get("/10_prefered_beers")
-def beers(style):
+def style_beers(style):
     X = style
     pipeline = joblib.load('model_style.joblib')
     results_style = pipeline.predict(X)
