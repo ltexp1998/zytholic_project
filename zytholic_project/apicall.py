@@ -106,10 +106,6 @@ def get_most_similar_beers_ibu_abv(name,
                        'min ibu', 'max ibu']]
 
     return results.to_dict()
-<<<<<<< HEAD
-
-
-=======
     
     
 def get_similar_style(
@@ -180,7 +176,6 @@ def get_similar_style(
     
     return results.to_dict()   
     
->>>>>>> 378ee4ad5ea474a9a57b325cbd0a0ca2f917850f
 if __name__ == '__main__':
     # print(check_name('Our Special Ale 2019 (Anchor Christmas Ale)'))
     # print(check_name('Gaffel Kölsch'))
