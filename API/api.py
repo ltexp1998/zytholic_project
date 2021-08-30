@@ -39,7 +39,6 @@ def style_beers(style):
     results_style = pipeline.predict(X)
     return {results_style}
 
-
 @app.get("/taste")
 def taste(taste):
     X = taste
