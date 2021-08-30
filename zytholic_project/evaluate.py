@@ -29,10 +29,6 @@ def get_recommendations(df, name,
     
     if ignore_index_beers:
         beers_indices = [i[0] for i in indices if i[0] not in ignore_index_beers]
-        # beers_indices = []
-        # for i in indices:
-        #     if (i[0] not in ignore_index_beers):
-        #         beers_indices.append(i[0])
         
     else:
         beers_indices = [i[0] for i in indices]

@@ -1,4 +1,5 @@
 from operator import mod
+from os import symlink
 import pandas as pd
 from zytholic_project.base_model import BaseModel
 from zytholic_project.evaluate import get_recommendations, get_name_index
@@ -107,8 +108,77 @@ def get_most_similar_beers_ibu_abv(name,
     return results.to_dict()
     
     
+def get_similar_style(
+        style,
+        abv=None, 
+        ibu=None,
+        n_beers=5, 
+        similarity='cosine'):
+    """
+    For a given style, return beers close to the average beer 
+    Possibility to limit the alcohol content and bitterness
+    """
+    
+    # Import data, preprocess it
+    # To extract for function and to be executed only once
+    model = BaseModel()
+    model.get_data()
+    model.set_preprocess_pipeline()
+    model.preprocess.fit(model.working_df)
+    model.X = model.preprocess.transform(model.working_df)
+    
+    # Get average features for a given style
+    style_df = model.working_df[model.working_df['style'] == style]
+    style_df = style_df.index
+    style_df = model.X[style_df, :]
+    style_df = style_df.mean(axis=0).reshape(1,-1)
+    
+    # Get similarity scores between beers
+    # To extract for function and to be executed only once
+    if similarity == 'cosine':
+        kernel = cosine_similarity(style_df, model.X)
+    elif similarity == 'sigmoid':
+        kernel = sigmoid_kernel(style_df,  model.X)
+    elif similarity == 'linear':
+        kernel = linear_kernel(style_df, model.X)
+    
+    # Filter results if IBU or ABV are specified
+    if ibu is not None:
+        bad_index_ibu = model.working_df[model.working_df['max ibu'] > ibu] 
+        bad_index_ibu = set(bad_index_ibu.index)
+    else:
+        bad_index_ibu = set()  
+                                                 
+    if abv is not None:
+        bad_index_abv = model.working_df[model.working_df['abv'] > abv]
+        bad_index_abv = set(bad_index_abv.index)
+    else:
+        bad_index_abv = set()  
+    bad_indexes = bad_index_abv.union(bad_index_ibu)
+    
+    # Extract most similar beers after sorting
+    score = sorted(
+        list(enumerate(kernel[0])), # Verify here
+        key=lambda x:x[1],reverse=True)
+    
+    # Filter out beers that don't meet ABV and IBU requirements
+    if bad_indexes:
+        beers_indices = [i[0] for i in score if i[0] not in bad_indexes]
+    else:
+        beers_indices = [i[0] for i in score]
+        
+    # Top 10 most similar beers
+    beers_indices = beers_indices[:n_beers] 
+    results = model.working_df.iloc[beers_indices, :]
+    results = results[['name', 'brewery', 
+                       'style', 'abv', 
+                       'min ibu', 'max ibu']]
+    
+    return results.to_dict()   
+    
 if __name__ == '__main__':
-    print(check_name('Our Special Ale 2019 (Anchor Christmas Ale)'))
-    print(check_name('Gaffel Kölsch'))
-    print(check_name('abcde') == 'Invalid Name')
-    print(check_name('Longist Trail Ale') == 'Invalid Name')
+    # print(check_name('Our Special Ale 2019 (Anchor Christmas Ale)'))
+    # print(check_name('Gaffel Kölsch'))
+    # print(check_name('abcde') == 'Invalid Name')
+    # print(check_name('Longist Trail Ale') == 'Invalid Name')
+    print(get_similar_style('Stout', ibu=70, abv=6))
