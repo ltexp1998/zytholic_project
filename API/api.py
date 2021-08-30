@@ -5,6 +5,7 @@ import joblib
 import pandas as pd
 #import zytholic_project.style_rename
 from zytholic_project.apicall import get_most_similar_beers, get_most_similar_beers_ibu_abv
+from zytholic_project.apicall import get_similar_style
 
 app = FastAPI()
 
@@ -36,12 +37,12 @@ def filter(name, abv=None, ibu=None):
     results_name = get_most_similar_beers_ibu_abv(name, float(ibu), float(abv))
     return results_name
 
-# @app.get("/10_prefered_beers")
-# def style_beers(style):
-#     X = style
-#     pipeline = joblib.load('model_style.joblib')
-#     results_style = pipeline.predict(X)
-#     return {results_style}
+@app.get("/style_search")
+def style_beers(style, abv=None, ibu=None):
+    if abv is not None: abv = float(abv)
+    if ibu is not None: ibu = float(ibu)
+    return get_similar_style(style, abv, ibu)
+
 
 # @app.get("/taste")
 # def taste(taste):
