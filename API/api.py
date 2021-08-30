@@ -4,7 +4,7 @@ import uvicorn
 import joblib
 import pandas as pd
 #import zytholic_project.style_rename
-from zytholic_project.apicall import get_most_similar_beers
+from zytholic_project.apicall import get_most_similar_beers, get_most_similar_beers_ibu_abv
 
 app = FastAPI()
 
@@ -27,6 +27,10 @@ def beers(name):
     results_name = get_most_similar_beers(name)
     return results_name
 
+@app.get("/filter_abv_ibu")
+def filter(name, abv=None, ibu=None):
+    results_name = get_most_similar_beers_ibu_abv(name, abv, ibu)
+    return results_name
 
 @app.get("/10_prefered_beers")
 def style_beers(style):

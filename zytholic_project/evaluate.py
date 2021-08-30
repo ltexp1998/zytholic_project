@@ -12,7 +12,9 @@ def get_name_index(name, df):
     return position    
     
     
-def get_recommendations(df, name, sim_matrix=None, n_recomm=10):
+def get_recommendations(df, name, 
+                        sim_matrix=None, n_recomm=10,
+                        ignore_index_beers=None):
     """
     Uses similarity distance using sim_matrix to return the 10 closest beers
     to the "name" input inside the specified DF
@@ -21,12 +23,23 @@ def get_recommendations(df, name, sim_matrix=None, n_recomm=10):
     
     # Extract most similar beers after sorting
     score = sorted(
-        list(enumerate(sim_matrix[position][0])),
+        list(enumerate(sim_matrix[position][0])), # Verify here
         key=lambda x:x[1],reverse=True)
-    indices = score[1:n_recomm+1]
-    beers_indices = [i[0] for i in indices]
+    indices = score
+    
+    if ignore_index_beers:
+        # beers_indices = [i[0] for i in indices if i[0] not in ignore_index_beers]
+        beers_indices = []
+        for i in indices:
+            if (i[0] not in ignore_index_beers):
+                beers_indices.append(i[0])
+        
+    else:
+        beers_indices = [i[0] for i in indices]
     # Top 10 most similar beers
-    return df.iloc[beers_indices]
+    import ipdb; ipdb.set_trace()
+    beers_indices = beers_indices[:n_recomm+1] # Remove 1st beer
+    return df.iloc[beers_indices, :]
 
 
 def evaluate_proximity(df,  n_recomm=10, tests=10, sim_matrix=None,):
