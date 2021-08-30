@@ -1,6 +1,8 @@
 import streamlit as st
 import requests
 import base64
+import json
+import pandas as pd
 
 ################# BACKGROUND IMAGE section #################
 
@@ -34,12 +36,15 @@ st.markdown('<p style="visibility : hidden">Image credit : https://urlz.fr/gm4x"
 CSS = """
 .stSlider, .css-1iyw2u1, .css-1djdyxw{text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white; }
 .css-2y0inq {color :white}
-.css-1cu04ak {background-color: white}
 .border2 {text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white; padding : 0.5em}
 #style-proposition {text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white; border : solid white 1px; padding: 0.5em; padding-bottom : 25em}
 .title1 {text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white; text-align: center; font-size: 4em; text-transform: uppercase;}
 .title2 {text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white; text-align: center;font-size: 2em; padding-bottom: 1em;text-transform: capitalize;}
-.proposition_return {text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white;font-size: 1em; padding-bottom: 1em;text-transform: capitalize;}
+
+.beer_name {font-weight: bold; color: yellow; font-size:1.5em}
+
+.proposition_return {text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white;font-size: 1em; padding-bottom: 1em;text-transform: capitalize;font-size: 1em}
+
 .use_app {text-align: center; text-transform: uppercase; text-decoration: underline; color:purple}
 .bold_underline {font-weight: bold; text-decoration: underline;}
 .bold {font-weight: bold;}
@@ -47,7 +52,7 @@ CSS = """
 .slide_title {text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff ; color: white; margin-bottom: -2em}
 div[role="radiogroup"]{flex-flow: row; justify-content: center;}
 div[role="listbox"] ul {background-color :black;}
-div[role="radiogroup"] {text-shadow: 0 0 3px white, 0 0 3px white;}
+div[role="radiogroup"] {text-shadow: 0 0 3px white, 0 0 3px white; font-size:3em}
 .css-1d0tddh {background: -webkit-linear-gradient(white, yellow);-webkit-background-clip: text;-webkit-text-fill-color: transparent;}
 """
 st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
@@ -108,7 +113,7 @@ st.markdown('    ')
 # ABV and IBU SLIDEBAR section
 
 st.markdown('<p class="slide_title">ABV : %/Vol</p>', unsafe_allow_html=True)
-option_ABV = int(st.slider('', min_value=0., max_value=20., value=8., step=0.1))
+option_ABV = st.slider('', min_value=0., max_value=20., value=8., step=0.1)
 st.markdown('<p class="slide_title">IBU :</p>', unsafe_allow_html=True)
 option_IBU = st.slider('', min_value = 0, max_value = 100, value = 50, step = 1)
 
@@ -116,42 +121,45 @@ option_IBU = st.slider('', min_value = 0, max_value = 100, value = 50, step = 1)
 
 # enter here the address of api
 
-#url_local = 'http://localhost:2809'
+url_local = 'http://localhost:1234'
 #url_distant = 'http://localhost:5000'
-url_distant = 'https://api-zytholic-project-uq4l4l4m7a-ew.a.run.app'
+#url_distant = 'https://api-zytholic-project-uq4l4l4m7a-ew.a.run.app'
 
 # TEST DU RETOUR API A SUPPRIMER
 
 # test de l'endpoint "test" de l'API
 
-# urltest = (f'{url_distant}/test?test={option_ABV}')
-# response = requests.get(urltest)
-# st.sidebar.markdown(f'test : {response}')
-
-# test de l'endpoint "10_prefered_beers" de l'API
-# url_ten_beer = (f'{url_distant}/10_prefered_beers?style={style}')
-# beer_result = requests.get(url_ten_beer).json()[0]
-# st.sidebar.markdown(f'style : {beer_result}')
-
-# test de l'endpoint "taste" de l'API
-# url_taste = (f'{url_distant}/taste?taste={taste}')
-# taste_result = requests.get(url_taste).json()[0]
-# st.sidebar.markdown(f'taste : {taste_result}')
-
+API_call = (f'{url_local}/filter_abv_ibu?name={beer_name}&abv={option_ABV}&ibu={option_IBU}')
+response = requests.get(API_call).json()
+#st.sidebar.markdown(f'test : {response}')
 
 
 ################# PROPOSITION SELECTION section #################
 
 st.markdown('<h2 class="border2">Proposition with your previous choice :</h2>', unsafe_allow_html=True)
 
-brewery = 'test_brewery'
-name = 'test_name'
-ABV_return = option_ABV
-style = 'test_style'
+for key, value in response.items():
+    test = value
+for i in test:
+    name = response['name'][i]
+    brewery = response['brewery'][i]
+    abv = response['abv'][i]
+    style = response['style'][i]
+    ibu = (int(response['min ibu'][i]) + int(response['max ibu'][i]))/2
 
+    st.markdown(
+        '<p class = "proposition_return">'
+        f'<span class="beer_name">{name}</span> from {brewery} with {abv}°alc'
+        '</p>',
+        unsafe_allow_html=True)
+    st.markdown('<p class = "proposition_return">'
+                f'Mean IBU : {ibu} style : {style}'
+                '</p>',
+                unsafe_allow_html=True)
 
-st.markdown('<p class = "proposition_return">'f'{name} from {brewery} with {ABV_return}°alc and style : {style}''</p>, ',
-            unsafe_allow_html=True)
+################# TEST RETOUR DATAFRAME PANDAS #################
+
+# st.write(pd.DataFrame(response)) # test non concluant
 
 ################# SIDE BAR #################
 
