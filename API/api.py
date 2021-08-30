@@ -27,14 +27,12 @@ def beers(name):
     results_name = pipeline.predict(X)
     return {results_name}
 
-
 @app.get("/10_prefered_beers")
 def beers(style):
     X = style
     pipeline = joblib.load('model_style.joblib')
     results_style = pipeline.predict(X)
     return {results_style}
-
 
 @app.get("/taste")
 def taste(taste):
