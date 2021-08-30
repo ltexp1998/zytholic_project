@@ -29,7 +29,7 @@ def beers(name):
 
 @app.get("/filter_abv_ibu")
 def filter(name, abv=None, ibu=None):
-    results_name = get_most_similar_beers_ibu_abv(name, abv, ibu)
+    results_name = get_most_similar_beers_ibu_abv(name, float(ibu), float(abv))
     return results_name
 
 @app.get("/10_prefered_beers")

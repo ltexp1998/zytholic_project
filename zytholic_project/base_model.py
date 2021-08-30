@@ -22,12 +22,12 @@ class BaseModel():
         
     def get_data(self):
         """Merge data from Beers and Breweries using top-information as reference"""
-        dfbrew = pd.read_csv("../raw_data/Beers_Breweries_and_Beer Reviews/breweries.csv")
-        dfbeer = pd.read_csv("../raw_data/beers_style_renamed.csv")
-        dftop = pd.read_csv("../raw_data/top_beer_info_style_renamed.csv")
+        dfbrew = pd.read_csv("raw_data/Beers_Breweries_and_Beer Reviews/breweries.csv")
+        dfbeer = pd.read_csv("raw_data/beers_style_renamed.csv")
+        dftop = pd.read_csv("raw_data/top_beer_info_style_renamed.csv")
 
         #read correspondance brewery
-        corres_xls = pd.read_csv('../assets/matching_brewery_names.csv')
+        corres_xls = pd.read_csv('assets/matching_brewery_names.csv')
         corres_xls.set_index('bbr', inplace=True)
         corres= corres_xls.to_dict()
 
@@ -59,7 +59,7 @@ class BaseModel():
         """
         
         # Get matching table for styles names and format it
-        style_csv = pd.read_csv('../assets/style_convert.csv')
+        style_csv = pd.read_csv('assets/style_convert.csv')
         style_csv = style_csv[['Converted', 'Simplified']]
 
         # creation of a dictionary to replace automatically

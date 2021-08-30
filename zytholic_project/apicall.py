@@ -11,7 +11,7 @@ def check_name(name):
     Returns whether or not the name is in the database
     """
     beer_list = pd.read_csv(
-        '../raw_data/top_beer_info_style_renamed.csv', 
+        'raw_data/top_beer_info_style_renamed.csv', 
         usecols=['name'])
     beer_list = beer_list['name'].to_list()
     return name if name in beer_list else 'Invalid Name'
@@ -61,7 +61,6 @@ def get_most_similar_beers_ibu_abv(name,
     # To extract for function and to be executed only once
     model = BaseModel()
     model.get_data()
-    #model.working_df = model.working_df.iloc[:15,:]
     model.set_preprocess_pipeline()
     model.preprocess.fit(model.working_df)
     model.X = model.preprocess.transform(model.working_df)
@@ -93,7 +92,6 @@ def get_most_similar_beers_ibu_abv(name,
     name_position = get_name_index(name, model.working_df)
     bad_indexes.discard(int(name_position))
     bad_indexes = list(bad_indexes)
-    #import ipdb; ipdb.set_trace()
     
     # Get the recommendation
     results = get_recommendations(

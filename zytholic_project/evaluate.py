@@ -28,17 +28,16 @@ def get_recommendations(df, name,
     indices = score
     
     if ignore_index_beers:
-        # beers_indices = [i[0] for i in indices if i[0] not in ignore_index_beers]
-        beers_indices = []
-        for i in indices:
-            if (i[0] not in ignore_index_beers):
-                beers_indices.append(i[0])
+        beers_indices = [i[0] for i in indices if i[0] not in ignore_index_beers]
+        # beers_indices = []
+        # for i in indices:
+        #     if (i[0] not in ignore_index_beers):
+        #         beers_indices.append(i[0])
         
     else:
         beers_indices = [i[0] for i in indices]
     # Top 10 most similar beers
-    import ipdb; ipdb.set_trace()
-    beers_indices = beers_indices[:n_recomm+1] # Remove 1st beer
+    beers_indices = beers_indices[:n_recomm+1] 
     return df.iloc[beers_indices, :]
 
 
