@@ -45,12 +45,10 @@ CSS = """
 .bold {font-weight: bold;}
 .select_title {text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white; border : solid white 1px; padding : 0.5em}
 .slide_title {text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff ; color: white; margin-bottom: -2em}
-.st-cc {color:white}
-div[role="radiogroup"]{flex-flow: row; justify-content: center}
+div[role="radiogroup"]{flex-flow: row; justify-content: center;}
 div[role="listbox"] ul {background-color :black;}
-.css-1d0tddh {background: -webkit-linear-gradient(white, yellow);-webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;}
-.st-ed, .st-ch {background-color :black;}
+div[role="radiogroup"] {text-shadow: 0 0 3px white, 0 0 3px white;}
+.css-1d0tddh {background: -webkit-linear-gradient(white, yellow);-webkit-background-clip: text;-webkit-text-fill-color: transparent;}
 """
 st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
 
