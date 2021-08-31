@@ -2,27 +2,39 @@ import pandas as pd
 import numpy as np  
 from sklearn.metrics.pairwise import sigmoid_kernel, cosine_similarity, linear_kernel
 
-def content(df, name, sim_matrix=None, n_recomm=10):
+def get_name_index(name, df):
+    """From a name of a beer, find it index in the dataframe"""
+    # Dataframe to get index of a given beer
+    temp = df[['name']].copy()
+    temp.reset_index(drop=True, inplace=True) # removes old index
+    index = temp.reset_index() # get lines numbers as index column
+    position = index[index['name'] == name]['index']
+    return position    
+    
+    
+def get_recommendations(df, name, 
+                        sim_matrix=None, n_recomm=10,
+                        ignore_index_beers=None):
     """
     Uses similarity distance using sim_matrix to return the 10 closest beers
     to the "name" input inside the specified DF
-    """
+    """    
+    position = get_name_index(name, df)
     
-    # Dataframe to get index of a given beer
-    temp = df.copy()
-    temp.reset_index(drop=True, inplace=True)
-    temp.reset_index(inplace=True)
-    index = temp.iloc[:,:4]
-    
-    # Extract most similar beers
-    position = index[index.name == name]['index']
+    # Extract most similar beers after sorting
     score = sorted(
-        list(enumerate(sim_matrix[position][0])),
+        list(enumerate(sim_matrix[position][0])), # Verify here
         key=lambda x:x[1],reverse=True)
-    indices = score[1:n_recomm+1]
-    beers_indices = [i[0] for i in indices]
+    indices = score
+    
+    if ignore_index_beers:
+        beers_indices = [i[0] for i in indices if i[0] not in ignore_index_beers]
+        
+    else:
+        beers_indices = [i[0] for i in indices]
     # Top 10 most similar beers
-    return df.iloc[beers_indices]
+    beers_indices = beers_indices[:n_recomm+1] 
+    return df.iloc[beers_indices, :]
 
 
 def evaluate_proximity(df,  n_recomm=10, tests=10, sim_matrix=None,):
@@ -44,7 +56,7 @@ def evaluate_proximity(df,  n_recomm=10, tests=10, sim_matrix=None,):
         mod = {}
         for name in samples:
             # calculate content based similarity for each sample
-            res = content(df, name, sim_matrix, n_recomm)
+            res = get_recommendations(df, name, sim_matrix, n_recomm)
             # Get percentage of matching style for each sample
             matching_percent = res[res['style'] == st].shape[0] / res.shape[0] * 100
             percent.append(matching_percent)
