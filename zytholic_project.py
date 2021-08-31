@@ -1,8 +1,6 @@
 import streamlit as st
 import requests
 import base64
-import json
-import pandas as pd
 
 ################# BACKGROUND IMAGE section #################
 
@@ -60,6 +58,45 @@ div[role="radiogroup"] {text-shadow: 0 0 3px white, 0 0 3px white; font-size:3em
 .css-1d0tddh {background: -webkit-linear-gradient(white, yellow);-webkit-background-clip: text;-webkit-text-fill-color: transparent;}
 """
 st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
+
+################# SIDE BAR #################
+
+# how to use the app
+
+st.sidebar.markdown('<h2 class="use_app">To use the app : </h2>',
+                    unsafe_allow_html=True)
+st.sidebar.markdown(
+    '<div class="bold_underline">Complite ONE of these feature :</div>',
+    unsafe_allow_html=True)
+st.sidebar.markdown(
+    '<p style="padding-top: 1em"><span class="bold">Enter</span> the name of a beer</p>',
+    unsafe_allow_html=True)
+st.sidebar.markdown(
+    '<p><span class="bold">OR</span> Choose a Style (ex : IPA)</p>',
+    unsafe_allow_html=True)
+st.sidebar.markdown(
+    '<p><span class="bold">OR</span> Choose a Taste (ex : Hoppy)</p>',
+    unsafe_allow_html=True)
+
+st.sidebar.markdown('<p><span class="bold">AND</span> Choose ABV or IBU</p>',
+                    unsafe_allow_html=True)
+
+#legend section
+
+st.sidebar.markdown('<h2 class="use_app">legend : </h2>',
+                    unsafe_allow_html=True)
+
+st.sidebar.markdown(f"""## ABV :""")
+st.sidebar.markdown(f"""
+                    ## Alcohol by Volume. You know this one !
+                    ## Turns out how much alcohol in a beer really matters for style!
+                    """)  # DO NOT MODIFY ENDENTATION AND LINE RETURN !!!!
+
+st.sidebar.markdown(f"""## IBU :""")
+st.sidebar.markdown(f"""
+    ## International Bittering Units. How bitter is this beer?
+    ## 0 water to 100+ super bitter.
+    """)  # DO NOT MODIFY ENDENTATION AND LINE RETURN !!!!
 
 ################# SITE TITLE section #################
 
@@ -132,27 +169,25 @@ option_IBU = st.slider('', min_value = 0, max_value = 100, value = 50, step = 1)
 
 # enter here the address of api
 
-url_local = 'http://localhost:1234'
-#url_distant = 'http://localhost:5000'
-#url_distant = 'https://api-zytholic-project-uq4l4l4m7a-ew.a.run.app'
+#url_local = 'http://localhost:1234'
+#url_docker = 'http://0.0.0.0:5000'
+url_distant = 'https://api-zytholic-project-uq4l4l4m7a-ew.a.run.app'
 
 ################# API BEER NAME #################
 
 if feature == 'Name':
-    API_call_name = (f'{url_local}/filter_abv_ibu?name={beer_name}&abv={option_ABV}&ibu={option_IBU}')
+    API_call_name = (f'{url_distant}/filter_abv_ibu?name={beer_name}&abv={option_ABV}&ibu={option_IBU}')
     response = requests.get(API_call_name).json()
-    st.markdown(
-        '<h2 class="border2">Proposition with your previous choice :</h2>',
-        unsafe_allow_html=True)
+    st.markdown('<h2 class="border2">Proposition with your previous choice :</h2>',unsafe_allow_html=True)
 
 ################# API STYLE #################
 
 if feature == 'Style':
     #API_call_style = 'http://0.0.0.0:1234/style_search?style=Ale&abv=8&ibu=50'
-    API_call_style = (f'{url_local}/style_search?style={style}&abv={option_ABV}&ibu={option_IBU}')
+    API_call_style = (f'{url_distant}/style_search?style={style}&abv={option_ABV}&ibu={option_IBU}')
     response = requests.get(API_call_style).json()
 
-##### TEST format réponse à supprimer #####
+################# TEST format réponse à supprimer #################
 
 #st.sidebar.markdown(f'test : {response}')
 
@@ -184,42 +219,3 @@ for i in test:
 ################# TEST RETOUR DATAFRAME PANDAS #################
 
 # st.write(pd.DataFrame(response)) # test non concluant
-
-################# SIDE BAR #################
-
-# how to use the app
-
-st.sidebar.markdown('<h2 class="use_app">To use the app : </h2>',
-                    unsafe_allow_html=True)
-st.sidebar.markdown(
-    '<div class="bold_underline">Complite ONE of these feature :</div>',
-    unsafe_allow_html=True)
-st.sidebar.markdown(
-    '<p style="padding-top: 1em"><span class="bold">Enter</span> the name of a beer</p>',
-    unsafe_allow_html=True)
-st.sidebar.markdown(
-    '<p><span class="bold">OR</span> Choose a Style (ex : IPA)</p>',
-    unsafe_allow_html=True)
-st.sidebar.markdown(
-    '<p><span class="bold">OR</span> Choose a Taste (ex : Hoppy)</p>',
-    unsafe_allow_html=True)
-
-st.sidebar.markdown('<p><span class="bold">AND</span> Choose ABV or IBU</p>',
-                    unsafe_allow_html=True)
-
-#legend section
-
-st.sidebar.markdown('<h2 class="use_app">legend : </h2>',
-                    unsafe_allow_html=True)
-
-st.sidebar.markdown(f"""## ABV :""")
-st.sidebar.markdown(f"""
-                    ## Alcohol by Volume. You know this one !
-                    ## Turns out how much alcohol in a beer really matters for style!
-                    """)  # DO NOT MODIFY ENDENTATION AND LINE RETURN !!!!
-
-st.sidebar.markdown(f"""## IBU :""")
-st.sidebar.markdown(f"""
-    ## International Bittering Units. How bitter is this beer?
-    ## 0 water to 100+ super bitter.
-    """)  # DO NOT MODIFY ENDENTATION AND LINE RETURN !!!!

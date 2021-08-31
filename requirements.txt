@@ -1,6 +1,6 @@
 # packaging
-# pip>=9
-# setuptools>=26
+pip>=9
+setuptools>=26
 # twine
 # wheel>=0.29
 
@@ -36,4 +36,3 @@ fastapi
 
 # front
 streamlit
-
