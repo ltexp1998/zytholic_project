@@ -46,8 +46,9 @@ div[role="radiogroup"] {text-shadow : 1px 1px 3px white, 0 0 3px white}
 .border2 {color : white; padding : 0.5em}
 .beer_name_api_call {font-weight: bold; color : white; font-size:1.5em}
 .beer_name_api_return {font-weight: bold; color : white; font-size : 3em}
-.prop_degust {color : white; padding : 0.5em;text-align : center; font-size : 2em;text-decoration : underline}
-.proposition_return_1 {margin-bottom: -1.5em;color : white;font-size : 1em; text-transform : capitalize;font-size : 1em; border-bottom : 2px solid white}
+.prop_degust {color : white; padding : 0.5em; text-align : center; font-size : 1.8em;text-decoration : underline}
+.prop_degust_title {color : white; padding : 0.5em; font-size : 2.5em; text-align : center;}
+.proposition_return_1 {margin-bottom: -1.5em;color : white;font-size : 1em; text-transform : capitalize;font-size : 1em;}
 .proposition_return_2 {color : white;font-size : 1em; text-transform : capitalize;font-size : 1em; border-bottom : 2px solid white; padding-bottom : 1em}
 .repeat_choice {color : white; padding : 0.5em; text-align : center; border : 1.5px solid white; font-size : 2em}
 .select_title {color : white; padding : 0.5em; font-size : 2.5em}
@@ -67,7 +68,7 @@ st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
 
 # how to use the app
 
-st.sidebar.markdown('<h2 class="bl_use_app">To use the app : </h2>',
+st.sidebar.markdown('<h2 class="bl_use_app">How to use the app : </h2>',
                     unsafe_allow_html=True)
 st.sidebar.markdown(
     '<div class="bl_bold_underline">Complite ONE of these feature :</div>',
@@ -90,17 +91,17 @@ st.sidebar.markdown('<p><span class="bl_bold">AND</span> Choose ABV or IBU</p>',
 st.sidebar.markdown('<h2 class="bl_use_app">legend : </h2>',
                     unsafe_allow_html=True)
 
-st.sidebar.markdown(f"""## ABV :""")
-st.sidebar.markdown(f"""
-                    ## Alcohol by Volume. You know this one !
-                    ## Turns out how much alcohol in a beer really matters for style!
-                    """)  # DO NOT MODIFY ENDENTATION AND LINE RETURN !!!!
+st.sidebar.markdown("""## ABV :""")
+st.sidebar.markdown("""Alcohol by Volume. You know this one !
+Turns out how much alcohol in a beer really matters !""")  # DO NOT MODIFY ENDENTATION AND LINE RETURN !!!!
 
-st.sidebar.markdown(f"""## IBU :""")
-st.sidebar.markdown(f"""
-    ## International Bittering Units. How bitter is this beer?
-    ## 0 water to 100+ super bitter.
-    """)  # DO NOT MODIFY ENDENTATION AND LINE RETURN !!!!
+st.sidebar.markdown("""## IBU :""")
+st.sidebar.markdown("""International Bittering Units.
+
+How bitter is this beer ?
+### _from :_ ***0 IBU like water***
+### _to :_ ***100 IBU super bitter.***
+""")  # DO NOT MODIFY ENDENTATION AND LINE RETURN !!!!
 
 ################# SITE TITLE section #################
 
@@ -188,24 +189,17 @@ if feature == 'Name':
 ################# API STYLE #################
 
 if feature == 'Style':
-    #API_call_style = 'http://0.0.0.0:1234/style_search?style=Ale&abv=8&ibu=50'
+
     API_call_style = (
         f'{url_distant}/style_search?style={style}&abv={option_ABV}&ibu={option_IBU}'
     )
     response = requests.get(API_call_style).json()
 
-    ################# TEST format réponse à supprimer #################
+################# TEST format réponse à supprimer #################
 
 #st.sidebar.markdown(f'test : {response}')
 
 ################# PROPOSITION SELECTION section #################
-
-# if feature =="Name":
-#     st.markdown(
-#         '<h2 class="repeat_choice">'
-#         f'Your Beer name\'s choice was :</br><span class="beer_name_api_call">{beer_name}</span>'
-#         '</h2>',
-#         unsafe_allow_html=True)
 
 if feature =="Style":
     st.markdown(
@@ -225,10 +219,16 @@ if key == 'response':
         '</h2>',
         unsafe_allow_html=True)
 else:
-
+    if feature =="Name":
+        st.markdown(
+            '<h2 class="repeat_choice">'
+            f'Your Beer name\'s choice was :</br><span class="beer_name_api_call">{beer_name}</span>'
+            '</h2>',
+            unsafe_allow_html=True)
     st.markdown(
-        '<h2 class="prop_degust">Proposition with your previous choice :</h2>',
+        '<h2 class="prop_degust_title">Tasting proposition :</h2>',
         unsafe_allow_html=True)
+    prop = 0
     for i in value:
         choice = response['name'][i]
         name = response['name'][i]
@@ -237,15 +237,19 @@ else:
         style = response['style'][i]
         ibu = (int(response['min ibu'][i]) + int(response['max ibu'][i])) / 2
 
-        st.markdown(
-            '<p class = "proposition_return_1" style="border-bottom : none; margin-bottom: -1.5em;">'
-            f'<span class="beer_name_api_return">{name}</span> </br><span class="api_return">{abv}°</span> alc </br> style : <span class="api_return">{style}</span> </br> made by brewery : <span class="api_return">{brewery}</span>'
-            '</p>'
-            '</br>'
-            '<p class = "proposition_return_2">'
-            f'Mean IBU : <span class="api_return">{ibu}</span>'
-            '</p>',
-            unsafe_allow_html=True)
+        if prop == 0 :
+            pass
+        if prop > 0 :
+            st.markdown(
+                '<p class = "proposition_return_1">'
+                f'<span class="prop_degust">Proposition {prop}</span> : <span class="beer_name_api_return">{name}</span> </br><span class="api_return">{abv}°</span> alc </br> style : <span class="api_return">{style}</span> </br> made by brewery : <span class="api_return">{brewery}</span>'
+                '</p>'
+                '</br>'
+                '<p class = "proposition_return_2">'
+                f'Mean IBU : <span class="api_return">{ibu}</span>'
+                '</p>',
+                unsafe_allow_html=True)
+        prop += 1
 
 ################# TEST RETOUR DATAFRAME PANDAS #################
 
