@@ -25,6 +25,7 @@ def set_background(png_file):
     ''' % bin_str
     st.markdown(page_bg_img, unsafe_allow_html=True)
 
+
 set_background('./assets/img/beer.png')
 
 ################# BACKGROUND IMAGE CREDIT ON HTML #################
@@ -34,6 +35,9 @@ st.markdown('<p style="visibility : hidden">Image credit : https://urlz.fr/gm4x"
 ################# CSS custom section #################
 
 CSS = """
+.body {
+    width:800px
+}
 .stSlider, .css-1iyw2u1, .css-1djdyxw{text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white; }
 .css-2y0inq {color :white}
 .border2 {text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white; padding : 0.5em}
@@ -68,7 +72,11 @@ st.markdown('<h2 class="title2">help yourself to discover new beer</h2>', unsafe
 # FEATURE SELECTION : checkbox with feature selection
 
 st.markdown('<h2 class="title2">Feature selection</h2>', unsafe_allow_html=True)
-feature = st.radio('', ('Name', 'Style', 'Taste'))
+feature = st.radio('', ('Name', 'Style'))
+
+# if the feature Taste available :
+# feature = st.radio('', ('Name', 'Style', 'Taste'))
+
 st.markdown('    ')
 st.markdown('    ')
 
@@ -78,7 +86,7 @@ st.markdown('    ')
 if feature == 'Name':
     st.markdown('<h2 class="select_title">Enter the name of a beer :</h2>',unsafe_allow_html=True)
 
-    beer_name = st.text_input('', '')
+    beer_name = st.text_input('', 'Amber')
 
 # STYLE SELECTION section
 
@@ -87,25 +95,28 @@ elif feature == 'Style':
 
     if st.checkbox('Click here to "special" style (ex : Barleywine or Rye)'):
         style = st.selectbox("", [
-            "Choose your style here", 'Lambic', 'Smoked', 'Rye', 'Barleywine',
-            'Bitter', 'Brett', 'Altbier', 'Dubbel', 'Steam Beer', 'NEIPA',
-            'Ale Old', 'Bière de Garde', 'Quadrupel', 'Tripel', 'Saison',
-            'Braggot', 'Happoshu', 'Herb and Spice Beer', 'Pumpkin Beer', 'Kölsch','Bière de Champagne / Bière Brut', 'Sahti', 'Rice', 'Winter Warmer','Kvass', 'Fruit and Field Beer', 'Low Alcohol Beer'
+            "Lambic", 'Lambic', 'Smoked', 'Rye', 'Barleywine', 'Bitter',
+            'Brett', 'Altbier', 'Dubbel', 'Steam Beer', 'NEIPA', 'Ale Old',
+            'Bière de Garde', 'Quadrupel', 'Tripel', 'Saison', 'Braggot',
+            'Happoshu', 'Herb and Spice Beer', 'Pumpkin Beer', 'Kölsch',
+            'Bière de Champagne / Bière Brut', 'Sahti', 'Rice',
+            'Winter Warmer', 'Kvass', 'Fruit and Field Beer',
+            'Low Alcohol Beer'
         ])
 
     else :
         style = st.selectbox("", [
-            "Choose your style here", 'Lager', 'Stout', 'Ale', 'Wheat', 'IPA',
-            'Ale Dark', 'Bock', 'Porter', 'Sour', 'Ale Strong', 'Ale Pale',
-            'Ale Red', 'Pilsner'
+            "Lager", 'Lager', 'Stout', 'Ale', 'Wheat', 'IPA', 'Ale Dark',
+            'Bock', 'Porter', 'Sour', 'Ale Strong', 'Ale Pale', 'Ale Red',
+            'Pilsner'
         ])
 
 # TASTE SELECTION section
 
-elif feature == 'Taste':
-    st.markdown('<h2 class="select_title">Taste Selection : (Choose one)</h2>',unsafe_allow_html=True)
+# elif feature == 'Taste':
+#     st.markdown('<h2 class="select_title">Taste Selection : (Choose one)</h2>',unsafe_allow_html=True)
 
-    taste = st.selectbox("", ["Choose your taste here","Fruit", "Malty", "Hoppy", "Salty", "Bitter", "Sweet", "Sugar", "Fruit", "Malty", "Hoppy", "Salty", "Bitter", "Sweet", "Sugar"])
+#     taste = st.selectbox("", ["Choose your taste here","Fruit", "Malty", "Hoppy", "Salty", "Bitter", "Sweet", "Sugar", "Fruit", "Malty", "Hoppy", "Salty", "Bitter", "Sweet", "Sugar"])
 
 st.markdown('    ')
 st.markdown('    ')
@@ -125,14 +136,25 @@ url_local = 'http://localhost:1234'
 #url_distant = 'http://localhost:5000'
 #url_distant = 'https://api-zytholic-project-uq4l4l4m7a-ew.a.run.app'
 
-# TEST DU RETOUR API A SUPPRIMER
+################# API BEER NAME #################
 
-# test de l'endpoint "test" de l'API
+if feature == 'Name':
+    API_call_name = (f'{url_local}/filter_abv_ibu?name={beer_name}&abv={option_ABV}&ibu={option_IBU}')
+    response = requests.get(API_call_name).json()
+    st.markdown(
+        '<h2 class="border2">Proposition with your previous choice :</h2>',
+        unsafe_allow_html=True)
 
-API_call = (f'{url_local}/filter_abv_ibu?name={beer_name}&abv={option_ABV}&ibu={option_IBU}')
-response = requests.get(API_call).json()
+################# API STYLE #################
+
+if feature == 'Style':
+    #API_call_style = 'http://0.0.0.0:1234/style_search?style=Ale&abv=8&ibu=50'
+    API_call_style = (f'{url_local}/style_search?style={style}&abv={option_ABV}&ibu={option_IBU}')
+    response = requests.get(API_call_style).json()
+
+##### TEST format réponse à supprimer #####
+
 #st.sidebar.markdown(f'test : {response}')
-
 
 ################# PROPOSITION SELECTION section #################
 
@@ -145,7 +167,7 @@ for i in test:
     brewery = response['brewery'][i]
     abv = response['abv'][i]
     style = response['style'][i]
-    ibu = (int(response['min ibu'][i]) + int(response['max ibu'][i]))/2
+    ibu = (int(response['min ibu'][i]) + int(response['max ibu'][i])) / 2
 
     st.markdown(
         '<p class = "proposition_return">'
@@ -156,6 +178,8 @@ for i in test:
                 f'Mean IBU : {ibu} style : {style}'
                 '</p>',
                 unsafe_allow_html=True)
+
+
 
 ################# TEST RETOUR DATAFRAME PANDAS #################
 
