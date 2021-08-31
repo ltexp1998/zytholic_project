@@ -1,6 +1,8 @@
 import streamlit as st
 import requests
 import base64
+import pandas as pd
+
 
 ################# BACKGROUND IMAGE section #################
 
@@ -16,13 +18,12 @@ def set_background(png_file):
     page_bg_img = '''
     <style>
     .stApp {
-    background-image: url("data:image/png;base64,%s");
-    background-size: cover;
-    }
+    background-image : url("data:image/png;base64,%s");
+    background-size : cover;
+    background-color : rgba(0,0,255,0.3)
     </style>
     ''' % bin_str
     st.markdown(page_bg_img, unsafe_allow_html=True)
-
 
 set_background('./assets/img/beer.png')
 
@@ -33,57 +34,60 @@ st.markdown('<p style="visibility : hidden">Image credit : https://urlz.fr/gm4x"
 ################# CSS custom section #################
 
 CSS = """
-.body {
-    width:800px
-}
-.stSlider, .css-1iyw2u1, .css-1djdyxw{text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white; }
-.css-2y0inq {color :white}
-.border2 {text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white; padding : 0.5em}
-#style-proposition {text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white; border : solid white 1px; padding: 0.5em; padding-bottom : 25em}
-.title1 {text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white; text-align: center; font-size: 4em; text-transform: uppercase;}
-.title2 {text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white; text-align: center;font-size: 2em; padding-bottom: 1em;text-transform: capitalize;}
-
-.beer_name {font-weight: bold; color: yellow; font-size:1.5em}
-
-.proposition_return {text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white;font-size: 1em; padding-bottom: 1em;text-transform: capitalize;font-size: 1em}
-
-.use_app {text-align: center; text-transform: uppercase; text-decoration: underline; color:purple}
-.bold_underline {font-weight: bold; text-decoration: underline;}
-.bold {font-weight: bold;}
-.select_title {text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff; color: white; border : solid white 1px; padding : 0.5em}
-.slide_title {text-shadow: 0 0 3px #ff0000, 0 0 3px #0000ff ; color: white; margin-bottom: -2em}
-div[role="radiogroup"]{flex-flow: row; justify-content: center;}
+.reportview-container {background : rgba(0, 0, 0, 0.6);}
+.stSlider, .css-1iyw2u1, .css-1djdyxw{color : white;}
+.css-2y0inq, .css-1d0tddh  {color : white}
+div[role="radiogroup"]{flex-flow : row; justify-content : center;}
 div[role="listbox"] ul {background-color :black;}
-div[role="radiogroup"] {text-shadow: 0 0 3px white, 0 0 3px white; font-size:3em}
-.css-1d0tddh {background: -webkit-linear-gradient(white, yellow);-webkit-background-clip: text;-webkit-text-fill-color: transparent;}
+div[role="radiogroup"] {text-shadow : 1px 1px 3px white, 0 0 3px white}
+.st-bw, .st-cb{font-size : 1.5em;}
+
+.api_return {font-weight: bold; color : white; font-size:2em}
+.border2 {color : white; padding : 0.5em}
+.beer_name_api_call {font-weight: bold; color : white; font-size:1.5em}
+.beer_name_api_return {font-weight: bold; color : white; font-size : 3em}
+.prop_degust {color : white; padding : 0.5em;text-align : center; font-size : 2em;text-decoration : underline}
+.proposition_return_1 {margin-bottom: -1.5em;color : white;font-size : 1em; text-transform : capitalize;font-size : 1em; border-bottom : 2px solid white}
+.proposition_return_2 {color : white;font-size : 1em; text-transform : capitalize;font-size : 1em; border-bottom : 2px solid white; padding-bottom : 1em}
+.repeat_choice {color : white; padding : 0.5em; text-align : center; border : 1.5px solid white; font-size : 2em}
+.select_title {color : white; padding : 0.5em; font-size : 2.5em}
+.slide_title {color : white; margin-bottom : -2em}
+.title1 {color : white; text-align : center; font-size : 4em; text-transform : uppercase;}
+.title2 {color : white; text-align : center;font-size : 2em; padding-bottom : 1em;text-transform : capitalize;}
+
+.bl_use_app {text-align : center; text-transform : uppercase; text-decoration : underline; color :purple}
+.bl_bold_underline {font-weight : bold; text-decoration : underline;}
+.bl_bold {font-weight : bold;}
+
 """
+
 st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
 
 ################# SIDE BAR #################
 
 # how to use the app
 
-st.sidebar.markdown('<h2 class="use_app">To use the app : </h2>',
+st.sidebar.markdown('<h2 class="bl_use_app">To use the app : </h2>',
                     unsafe_allow_html=True)
 st.sidebar.markdown(
-    '<div class="bold_underline">Complite ONE of these feature :</div>',
+    '<div class="bl_bold_underline">Complite ONE of these feature :</div>',
     unsafe_allow_html=True)
 st.sidebar.markdown(
-    '<p style="padding-top: 1em"><span class="bold">Enter</span> the name of a beer</p>',
+    '<p style="padding-top : 1em"><span class="bl_bold">Enter</span> the name of a beer</p>',
     unsafe_allow_html=True)
 st.sidebar.markdown(
-    '<p><span class="bold">OR</span> Choose a Style (ex : IPA)</p>',
+    '<p><span class="bl_bold">OR</span> Choose a Style (ex : IPA)</p>',
     unsafe_allow_html=True)
-st.sidebar.markdown(
-    '<p><span class="bold">OR</span> Choose a Taste (ex : Hoppy)</p>',
-    unsafe_allow_html=True)
+# st.sidebar.markdown(
+#     '<p><span class="bl_bold">OR</span> Choose a Taste (ex : Hoppy)</p>',
+#     unsafe_allow_html=True)
 
-st.sidebar.markdown('<p><span class="bold">AND</span> Choose ABV or IBU</p>',
+st.sidebar.markdown('<p><span class="bl_bold">AND</span> Choose ABV or IBU</p>',
                     unsafe_allow_html=True)
 
 #legend section
 
-st.sidebar.markdown('<h2 class="use_app">legend : </h2>',
+st.sidebar.markdown('<h2 class="bl_use_app">legend : </h2>',
                     unsafe_allow_html=True)
 
 st.sidebar.markdown(f"""## ABV :""")
@@ -123,7 +127,7 @@ st.markdown('    ')
 if feature == 'Name':
     st.markdown('<h2 class="select_title">Enter the name of a beer :</h2>',unsafe_allow_html=True)
 
-    beer_name = st.text_input('', 'Amber')
+    beer_name = st.text_input('', '')
 
 # STYLE SELECTION section
 
@@ -169,53 +173,80 @@ option_IBU = st.slider('', min_value = 0, max_value = 100, value = 50, step = 1)
 
 # enter here the address of api
 
-#url_local = 'http://localhost:1234'
-#url_docker = 'http://0.0.0.0:5000'
+url_local = 'http://localhost:1234'
+url_docker = 'http://0.0.0.0:5000'
 url_distant = 'https://api-zytholic-project-uq4l4l4m7a-ew.a.run.app'
 
 ################# API BEER NAME #################
 
 if feature == 'Name':
-    API_call_name = (f'{url_distant}/filter_abv_ibu?name={beer_name}&abv={option_ABV}&ibu={option_IBU}')
+    API_call_name = (
+        f'{url_distant}/filter_abv_ibu?name={beer_name}&abv={option_ABV}&ibu={option_IBU}'
+    )
     response = requests.get(API_call_name).json()
-    st.markdown('<h2 class="border2">Proposition with your previous choice :</h2>',unsafe_allow_html=True)
 
 ################# API STYLE #################
 
 if feature == 'Style':
     #API_call_style = 'http://0.0.0.0:1234/style_search?style=Ale&abv=8&ibu=50'
-    API_call_style = (f'{url_distant}/style_search?style={style}&abv={option_ABV}&ibu={option_IBU}')
+    API_call_style = (
+        f'{url_distant}/style_search?style={style}&abv={option_ABV}&ibu={option_IBU}'
+    )
     response = requests.get(API_call_style).json()
 
-################# TEST format réponse à supprimer #################
+    ################# TEST format réponse à supprimer #################
 
 #st.sidebar.markdown(f'test : {response}')
 
 ################# PROPOSITION SELECTION section #################
 
-st.markdown('<h2 class="border2">Proposition with your previous choice :</h2>', unsafe_allow_html=True)
+# if feature =="Name":
+#     st.markdown(
+#         '<h2 class="repeat_choice">'
+#         f'Your Beer name\'s choice was :</br><span class="beer_name_api_call">{beer_name}</span>'
+#         '</h2>',
+#         unsafe_allow_html=True)
+
+if feature =="Style":
+    st.markdown(
+        '<h2 class="repeat_choice">'
+        f'Your Style\'s choice was : <span class="beer_name_api_call">{style}</span>'
+        '</h2>',
+        unsafe_allow_html=True)
 
 for key, value in response.items():
-    test = value
-for i in test:
-    name = response['name'][i]
-    brewery = response['brewery'][i]
-    abv = response['abv'][i]
-    style = response['style'][i]
-    ibu = (int(response['min ibu'][i]) + int(response['max ibu'][i])) / 2
+    result_json = value
+    execpt_result = key
+
+if key == 'response':
+    st.markdown(
+        '<h2 class="repeat_choice">'
+        f'Your Beer name\'s choice doesn\'t exist in the database'
+        '</h2>',
+        unsafe_allow_html=True)
+else:
 
     st.markdown(
-        '<p class = "proposition_return">'
-        f'<span class="beer_name">{name}</span> from {brewery} with {abv}°alc'
-        '</p>',
+        '<h2 class="prop_degust">Proposition with your previous choice :</h2>',
         unsafe_allow_html=True)
-    st.markdown('<p class = "proposition_return">'
-                f'Mean IBU : {ibu} style : {style}'
-                '</p>',
-                unsafe_allow_html=True)
+    for i in value:
+        choice = response['name'][i]
+        name = response['name'][i]
+        brewery = response['brewery'][i]
+        abv = response['abv'][i]
+        style = response['style'][i]
+        ibu = (int(response['min ibu'][i]) + int(response['max ibu'][i])) / 2
 
-
+        st.markdown(
+            '<p class = "proposition_return_1" style="border-bottom : none; margin-bottom: -1.5em;">'
+            f'<span class="beer_name_api_return">{name}</span> </br><span class="api_return">{abv}°</span> alc </br> style : <span class="api_return">{style}</span> </br> made by brewery : <span class="api_return">{brewery}</span>'
+            '</p>'
+            '</br>'
+            '<p class = "proposition_return_2">'
+            f'Mean IBU : <span class="api_return">{ibu}</span>'
+            '</p>',
+            unsafe_allow_html=True)
 
 ################# TEST RETOUR DATAFRAME PANDAS #################
 
-# st.write(pd.DataFrame(response)) # test non concluant
+#st.write(pd.DataFrame(response)) # test non concluant
