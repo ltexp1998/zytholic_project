@@ -210,7 +210,7 @@ if feature == 'Style':
 if feature =="Style":
     st.markdown(
         '<h2 class="repeat_choice">'
-        f'Your Style\'s choice was : <span class="beer_name_api_call">{style}</span>'
+        f'Your Style\'s choice is : <span class="beer_name_api_call">{style}</span>'
         '</h2>',
         unsafe_allow_html=True)
 
@@ -221,7 +221,7 @@ for key, value in response.items():
 if key == 'response':
     st.markdown(
         '<h2 class="repeat_choice">'
-        f'Your Beer name\'s choice doesn\'t exist in the database'
+        f'The Beer : <span class="beer_name_api_call">{beer_name}</span></br></br>Doesn\'t exist in the database'
         '</h2>',
         unsafe_allow_html=True)
 else:
