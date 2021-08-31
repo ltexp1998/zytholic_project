@@ -25,11 +25,12 @@ class BaseModelRev():
         pass
 
     def get_data(self):
-        """Merge data from Beers and Breweries using top-information as reference"""
+        """Merge data from Beers Breweries and Reviews using top-information as reference"""
         dfbrew = pd.read_csv(
             "../raw_data/Beers_Breweries_and_Beer Reviews/breweries.csv")
         dfbeer = pd.read_csv("../raw_data/beers_style_renamed.csv")
         dftop = pd.read_csv("../raw_data/top_beer_info_style_renamed.csv")
+        #dfrev = pd.read_csv("../raw_data/reviews_top_beer_concatenated.csv")
 
         #read correspondance brewery
         corres_xls = pd.read_csv('../assets/matching_brewery_names.csv')
@@ -56,20 +57,15 @@ class BaseModelRev():
         working_df = dftopbrew.drop(['description', 'key', 'style key'],
                                     axis=1).drop_duplicates()
         working_df = working_df[working_df.retired == 'f']
+        working_df = working_df.rename(columns={"id": "beer_id"})
+        # Merge Beers and Reviews with Top-Information
+
+        # working_df = pd.merge(working_df, dfrev, how='left', on=['beer_id'])
+        # working_df = working_df.drop(columns='beer_id')
+
+        #reformat styles
         self.working_df = self.reformat_styles(working_df, ohe=True)
         return self
-
-    """def get_data_rev(self):"""
-    #"""Merge data from Reviews and All the rest using id as referenc"""
-    #"""dfrev = pd.read_csv(
-    #"../raw_data/Beers_Breweries_and_Beer Reviews/reviews.csv")
-
-    #working_df = self.working_df.rename(columns={"id": "beer_id"})
-
-    #revdf = pd.merge(working_df,
-    #dfrev[['brewery_id', 'brewery']],
-    #how='left',
-    #on=["beer_id"])"""
 
     def reformat_styles(self, working_df, ohe=True):
         """
