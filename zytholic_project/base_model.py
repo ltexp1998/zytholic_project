@@ -1,13 +1,17 @@
 import pandas as pd
 import numpy as np
+from scipy.sparse.sputils import validateaxis
 
 from sklearn import set_config; set_config(display='diagram')
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler, OneHotEncoder
+from sklearn.impute import SimpleImputer
 from sklearn.pipeline import make_pipeline
 from sklearn.cluster import KMeans
 from sklearn.compose import make_column_transformer
+
+from zytholic_project.reviews_cleaning import reviews_featuring
 
 class BaseModel():
     """"
@@ -15,7 +19,6 @@ class BaseModel():
         - get_data()
         - set_preprocess_pipeline()
         - process_data()
-        - fit()
     """
     def __init__(self):
         pass
@@ -41,13 +44,14 @@ class BaseModel():
                             dfbrew[['brewery_id','brewery']],
                             how='left',on=['brewery_id'])
         dftopbrew = pd.merge(dftop,
-                            dfbrewb[['name', 'brewery', 'state', 'country', 'retired']],
+                            dfbrewb[['id', 'name', 'brewery', 'state', 'country', 'retired']],
                             how='inner',on=['name','brewery'])
 
         # Clean dataframe after merge, removes unwanted columns
         # removes retired beers
         working_df = dftopbrew.drop(['description', 'key', 'style key'], axis= 1).drop_duplicates()
         working_df = working_df[working_df.retired == 'f']
+        working_df = working_df.rename(columns={"id": "beer_id"})
         working_df.reset_index(inplace=True, drop=True)
         self.working_df = self.reformat_styles(working_df, ohe=True)
         return self
@@ -78,14 +82,40 @@ class BaseModel():
 
         working_df.rename(columns={'style':'original_style', 'simple_style':'style'}, inplace=True)
         return working_df
-
+    
+    def add_text_features(self, n_decomp=20):
+        """
+        Encode Text column using TfIdf then perform SVD to reduce
+        the number of dimensions to n_decomp
+        Merge with reference dataframe on beer_id
+        """
+        text_df = pd.read_csv(
+            '../raw_data/reviews_top_beer_preprocessed.csv', 
+            index_col = 'Unnamed: 0'
+        )
+        text_df = text_df.dropna()
+        # Actual encoding
+        encoded = reviews_featuring(text_df, n_decomp)
+        encoded.drop('text', axis=1, inplace=True)
+        
+        # Left join on beer_id with reference dataframe
+        new = pd.merge(self.working_df, 
+                        encoded, 
+                        on='beer_id', 
+                        how='left')
+        new = new.drop('beer_id', axis=1)
+        self.working_df = new
+        return self
 
     # ----------------- PIPELINES ------------------------------
     def set_preprocess_pipeline(self):
         """Create preprocessing pipeline for the data frame"""
         pipe_style_country = make_pipeline(OneHotEncoder(sparse=False,
                                                         handle_unknown='ignore'))
-        num_features_top = make_pipeline(MinMaxScaler())
+        num_features_top = make_pipeline(
+            SimpleImputer(strategy='constant', fill_value=0),
+            MinMaxScaler()
+            )
         # pipe_state = make_pipeline(
         #     SimpleImputer(strategy='constant', fill_value=''),
         #     OneHotEncoder(sparse=False, handle_unknown='ignore')
@@ -117,10 +147,4 @@ class BaseModel():
         self.preprocess.fit(X_train)
         self.X_train_proc = self.preprocess.transform(X_train)
         self.X_test_proc = self.preprocess.transform(X_test)
-        return self
-
-    def fit(self, clusts=20):
-        """Actual fit using KMeans algorithm"""
-        self.kmeans_fit = KMeans(n_clusters=clusts)
-        self.kmeans_fit.fit(self.X_train_proc)
         return self

@@ -15,7 +15,7 @@ def reviews_sorted():
     # Class instanciate to get the matching beer id columns
     model = BaseModelRev()
     model.get_data()
-    dfid = model.working_df['id']
+    dfid = model.working_df['beer_id']
     dfidlist = dfid.to_list()
     dfrev = dfreviews[['beer_id', 'text']].copy()
     dfrev = dfrev[dfrev['beer_id'].isin(dfidlist)]
@@ -25,10 +25,10 @@ def reviews_sorted():
 
     # Concatenated review in each beer id
     dfrev['text'] = dfrev.groupby(['beer_id'])['text'].transform(lambda x: ' '.join(x))
-    dfrevclean = dfrev.drop_duplicates()
+    dfrevclean = dfrev.drop_duplicates().reset_index(drop=True)
 
     # Write the Csv
-    dfrevclean.to_csv("raw_data/reviews_top_beer_concatenated.csv", index=False)
+    dfrevclean.to_csv("../raw_data/reviews_top_beer_concatenated.csv", index=False)
 
 
 if __name__ == '__main__':
@@ -61,7 +61,7 @@ def preprocessing(text):
 
     return text
 
-def reviews_featuring(dataframe):
+def reviews_featuring(dataframe, n_decomp):
 
     #Define a TF-IDF Vectorizer Object. Remove all english stop words such as 'the', 'a'
     tfidf = TfidfVectorizer(stop_words='english',
@@ -72,7 +72,7 @@ def reviews_featuring(dataframe):
     tfidf_matrix = tfidf.fit_transform(dataframe['text'])
 
     #Fit the SVD to create 10 new features
-    svd = TruncatedSVD(n_components=10, n_iter=10, random_state=42)
+    svd = TruncatedSVD(n_components=n_decomp, n_iter=10)
     svd.fit(tfidf_matrix)
     feat = svd.transform(tfidf_matrix)
     # Transform the new features into a dataframe

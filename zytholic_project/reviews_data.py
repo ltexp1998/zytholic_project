@@ -58,6 +58,7 @@ class BaseModelRev():
                                     axis=1).drop_duplicates()
         working_df = working_df[working_df.retired == 'f']
         working_df = working_df.rename(columns={"id": "beer_id"})
+        working_df = working_df.reset_index(drop=True)
         # Merge Beers and Reviews with Top-Information
 
         # working_df = pd.merge(working_df, dfrev, how='left', on=['beer_id'])
