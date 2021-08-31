@@ -42,11 +42,11 @@ def preprocessing(text):
 
     for punctuation in string.punctuation:
         text = text.replace(punctuation, ' ')
-
+    # Lowercased the text
     lowercased = text.lower()
-
+    # Dropping all the numbers
     clean = ''.join([i for i in lowercased if not i.isdigit()])
-
+    # Empty review are filled with \xa0
     replaced = clean.replace('\xa0', '')
 
     stop_words = set(stopwords.words('english'))
@@ -55,7 +55,7 @@ def preprocessing(text):
 
     lemmatizer = nltk.stem.WordNetLemmatizer()
     text = " ".join([lemmatizer.lemmatize(token) for token in text]).strip()
-
+    # Drop the punctuation that the first function miss
     garbage = "~`!@#$%^&*()_-+={[}]|\:;'<,>.?/"
     text = "".join([char for char in text if char not in garbage])
 
@@ -72,10 +72,10 @@ def reviews_featuring(dataframe):
     tfidf_matrix = tfidf.fit_transform(dataframe['text'])
 
     #Fit the SVD to create 10 new features
-
     svd = TruncatedSVD(n_components=10, n_iter=10, random_state=42)
     svd.fit(tfidf_matrix)
     feat = svd.transform(tfidf_matrix)
+    # Transform the new features into a dataframe
     feat = pd.DataFrame(feat)
     result = pd.concat([dataframe, feat], axis=1, join="inner")
     return result
