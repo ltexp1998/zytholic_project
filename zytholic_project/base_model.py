@@ -6,8 +6,10 @@ from sklearn import set_config; set_config(display='diagram')
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler, OneHotEncoder
 from sklearn.pipeline import make_pipeline
-from sklearn.cluster import KMeans
+
 from sklearn.compose import make_column_transformer
+from sklearn.metrics.pairwise import cosine_similarity, sigmoid_kernel,linear_kernel
+import pickle
 
 class BaseModel():
     """"
@@ -107,7 +109,7 @@ class BaseModel():
         self.preprocess = preprocess
         return self
 
-    def process_data(self):
+    def train_test_process_data(self):
         """Split dataset before fitting the model"""
         X_train, X_test = train_test_split(self.working_df,
                                            test_size=0.25,
@@ -118,5 +120,36 @@ class BaseModel():
         self.X_train_proc = self.preprocess.transform(X_train)
         self.X_test_proc = self.preprocess.transform(X_test)
         return self
+    
+    def process_whole_dataset(self):
+        """Fit the pipeline on the whole dataset
+        Returns np array for matrix distance calculation"""
+        self.preprocess.fit(self.working_df)
+        self.X = self.preprocess.transform(self.working_df)
+        return self
+    
+    def save_model(self):
+        """Save model with original and preprocessed as a joblib"""
+        with open("assets/model.pkl", "wb") as file:
+            pickle.dump(self, file)
+        print('Model saved')
+        
+    def save_calculated_distances(self):
+        """"""
+        cosine_sim = cosine_similarity(self.X, self.X)
+        pd.DataFrame(cosine_sim).to_csv('assets/cosine.csv', index=False)
+        sigmoid_sim = sigmoid_kernel(self.X,  self.X)
+        pd.DataFrame(sigmoid_sim).to_csv('assets/sigmoid.csv', index=False)
+        linear_sim = linear_kernel(self.X, self.X)
+        pd.DataFrame(linear_sim).to_csv('assets/linear.csv', index=False)
+        print('Datafile with similarity distances saved')
 
-
+    
+if __name__ == '__main__':
+    model = BaseModel()
+    model.get_data()
+    model.set_preprocess_pipeline()
+    model.process_whole_dataset()
+    model.save_model()
+    model.save_calculated_distances()
+    print('Initialization complete ! The CSVs and for the API are ready')
