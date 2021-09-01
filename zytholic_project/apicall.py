@@ -1,7 +1,6 @@
 from operator import mod
 from os import symlink
 import pandas as pd
-import joblib
 import pickle
 from zytholic_project.base_model import BaseModel
 from zytholic_project.evaluate import get_recommendations, get_name_index
@@ -14,9 +13,8 @@ def check_name(name):
     ----
     Returns whether or not the name is in the database
     """
-    beer_list = pd.read_csv(
-        'raw_data/top_beer_info_style_renamed.csv',
-        usecols=['name'])
+    with open('assets/dataframe.pkl', 'rb') as file:
+        beer_list = pickle.load(file)
     # Conversion of names to string AND Title REQUIRED
     beer_list = beer_list['name'].astype(str).str.title()
     beer_list = beer_list.to_list()
