@@ -7,6 +7,7 @@ from zytholic_project.base_model import BaseModel
 from zytholic_project.evaluate import get_recommendations, get_name_index
 from sklearn.metrics.pairwise import cosine_similarity, sigmoid_kernel,linear_kernel
 
+
 def check_name(name):
     """
     Get a name of a beer as an input
