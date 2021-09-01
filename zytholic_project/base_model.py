@@ -9,7 +9,6 @@ from sklearn.pipeline import make_pipeline
 
 from sklearn.compose import make_column_transformer
 from sklearn.metrics.pairwise import cosine_similarity, sigmoid_kernel,linear_kernel
-import joblib
 import pickle
 
 class BaseModel():
@@ -27,7 +26,9 @@ class BaseModel():
         """Merge data from Beers and Breweries using top-information as reference"""
         dfbrew = pd.read_csv("raw_data/Beers_Breweries_and_Beer Reviews/breweries.csv")
         dfbeer = pd.read_csv("raw_data/beers_style_renamed.csv")
+        dfbeer['name'] = dfbeer['name'].astype(str).str.title()
         dftop = pd.read_csv("raw_data/top_beer_info_style_renamed.csv")
+        dftop['name'] = dftop['name'].astype(str).str.title()
 
         #read correspondance brewery
         corres_xls = pd.read_csv('assets/matching_brewery_names.csv')
