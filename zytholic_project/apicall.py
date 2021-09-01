@@ -16,7 +16,9 @@ def check_name(name):
     beer_list = pd.read_csv(
         'raw_data/top_beer_info_style_renamed.csv',
         usecols=['name'])
-    beer_list = beer_list['name'].to_list()
+    # Conversion of names to string AND Title REQUIRED
+    beer_list = beer_list['name'].astype(str).str.title()
+    beer_list = beer_list.to_list()
     return name if name in beer_list else 'Invalid Name'
 
 
@@ -196,5 +198,7 @@ if __name__ == '__main__':
     # print(check_name('Gaffel Kölsch'))
     # print(check_name('abcde') == 'Invalid Name')
     # print(check_name('Longist Trail Ale') == 'Invalid Name')
+    print(check_name('Duvel'))
+    print(check_name('Budweiser'))
     print(get_most_similar_beers('Amber'))
     #print(get_similar_style('Stout', ibu=70, abv=6))
