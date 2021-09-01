@@ -28,18 +28,9 @@ def get_most_similar_beers(name, n_beers=5, similarity='cosine'):
     if check_name(name) != name:
         return {'response': f'{name} is not a valid name'}
 
-    # Import data, preprocess it
-    # To extract for function and to be executed only once
-    """ model = BaseModel()
-    model.get_data()
-    model.set_preprocess_pipeline()
-    model.preprocess.fit(model.working_df)
-    model.X = model.preprocess.transform(model.working_df) """
-
     # Import the model as a pickle
     with open("assets/dataframe.pkl", "rb") as file:
         working_df = pickle.load(file)
-
 
     # Get similarity scores between beers
     # To extract for function and to be executed only once
@@ -67,14 +58,6 @@ def get_most_similar_beers_ibu_abv(name,
     """
     if check_name(name) != name:
         return {'response': f'{name} is not a valid name'}
-
-    """ # Import data, preprocess it
-    # To extract for function and to be executed only once
-    model = BaseModel()
-    model.get_data()
-    model.set_preprocess_pipeline()
-    model.preprocess.fit(model.working_df)
-    model.X = model.preprocess.transform(model.working_df) """
 
     # Import the model as a pickle
     with open("assets/dataframe.pkl", "rb") as file:
