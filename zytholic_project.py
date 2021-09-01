@@ -78,19 +78,19 @@ st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
 
 # how to use the app
 
-st.sidebar.markdown('<h2 class="side_bar_use_app">How to use the app : </h2>',
+st.sidebar.markdown('<h2 class="side_bar_use_app">How to use the app: </h2>',
                     unsafe_allow_html=True)
 st.sidebar.markdown(
-    '<div class="side_bar_bold_underline">Complite ONE of these feature :</div>',
+    '<div class="side_bar_bold_underline">Complete ONE of these features:</div>',
     unsafe_allow_html=True)
 st.sidebar.markdown(
     '<p style="padding-top : 1em"><span class="side_bar_bold">Enter</span> the name of a beer</p>',
     unsafe_allow_html=True)
 st.sidebar.markdown(
-    '<p><span class="side_bar_bold">OR</span> Choose a Style (ex : IPA)</p>',
+    '<p><span class="side_bar_bold">OR</span> Choose a Style (ex: IPA)</p>',
     unsafe_allow_html=True)
 # st.sidebar.markdown(
-#     '<p><span class="side_bar_bold">OR</span> Choose a Taste (ex : Hoppy)</p>',
+#     '<p><span class="side_bar_bold">OR</span> Choose a Taste (ex: Hoppy)</p>',
 #     unsafe_allow_html=True)
 
 st.sidebar.markdown('<p><span class="side_bar_bold">AND</span> Choose ABV or IBU</p>',
@@ -98,14 +98,14 @@ st.sidebar.markdown('<p><span class="side_bar_bold">AND</span> Choose ABV or IBU
 
 #legend section
 
-st.sidebar.markdown('<h2 class="side_bar_use_app">legend : </h2>',
+st.sidebar.markdown('<h2 class="side_bar_use_app">legend: </h2>',
                     unsafe_allow_html=True)
 
-st.sidebar.markdown("""## ABV :""")
+st.sidebar.markdown("""## ABV:""")
 st.sidebar.markdown("""Alcohol by Volume. You know this one !
 Turns out how much alcohol in a beer really matters !""")  # DO NOT MODIFY ENDENTATION AND LINE RETURN !!!!
 
-st.sidebar.markdown("""## IBU :""")
+st.sidebar.markdown("""## IBU:""")
 st.sidebar.markdown("""International Bittering Units.
 
 How bitter is this beer ?
@@ -136,16 +136,16 @@ st.markdown('    ')
 # NAME OF A BEER field section
 
 if feature == 'Name':
-    st.markdown('<h2 class="select_title">Enter the name of a beer :</h2>',unsafe_allow_html=True)
+    st.markdown('<h2 class="select_title">Enter a beer name:</h2>',unsafe_allow_html=True)
     # return the beer's name with all entry capitalize to match with the dataset :
     beer_name = st.text_input('', '').title()
 
 # STYLE SELECTION section
 
 elif feature == 'Style':
-    st.markdown('<h2 class="select_title">Style Selection : (Choose one)</h2>',unsafe_allow_html=True)
+    st.markdown('<h2 class="select_title">Style Selection: (Choose one)</h2>',unsafe_allow_html=True)
 
-    if st.checkbox('Click here to "special" style (like : Barleywine or Rye)'):
+    if st.checkbox('Click here to "special" style (like Barleywine or Rye)'):
         style = st.selectbox("", [
             "Lambic", 'Lambic', 'Smoked', 'Rye', 'Barleywine', 'Bitter',
             'Brett', 'Altbier', 'Dubbel', 'Steam Beer', 'NEIPA', 'Ale Old',
@@ -175,9 +175,9 @@ st.markdown('    ')
 
 # ABV and IBU SLIDEBAR section
 
-st.markdown('<p class="slide_title">ABV : %/Vol</p>', unsafe_allow_html=True)
+st.markdown('<p class="slide_title">ABV (%/Vol):</p>', unsafe_allow_html=True)
 option_ABV = st.slider('', min_value=0., max_value=20., value=8., step=0.1)
-st.markdown('<p class="slide_title">IBU :</p>', unsafe_allow_html=True)
+st.markdown('<p class="slide_title">IBU:</p>', unsafe_allow_html=True)
 option_IBU = st.slider('', min_value = 0, max_value = 100, value = 50, step = 1)
 
 ################# API CALL #################
@@ -214,7 +214,7 @@ if feature == 'Style':
 if feature == "Style":
     st.markdown(
         '<h2 class="repeat_choice">'
-        f'Your Style\'s choice is : <span class="beer_name_api_call">{style}</span>'
+        f'Your Style\'s choice is: <span class="beer_name_api_call">{style}</span>'
         '</h2>',
         unsafe_allow_html=True)
 
@@ -226,18 +226,18 @@ if key == 'response':
 
     st.markdown(
         '<h2 class="repeat_choice">'
-        f'The Beer : <span class="beer_name_api_call">{beer_name}</span></br></br>Doesn\'t exist in the database'
+        f'The Beer: <span class="beer_name_api_call">{beer_name}</span></br></br>Doesn\'t exist in the database'
         '</h2>',
         unsafe_allow_html=True)
 else:
     if feature =="Name":
         st.markdown(
             '<h2 class="repeat_choice">'
-            f'Your Beer name\'s choice was :</br><span class="return_title">{beer_name}</span></br><a class="return_link" href="https://www.beeradvocate.com/search/?q={beer_name}" target="_blank"> ( Beer info : &#127866;)</a>'
+            f'Your Beer name\'s choice was:</br><span class="return_title">{beer_name}</span></br><a class="return_link" href="https://www.beeradvocate.com/search/?q={beer_name}" target="_blank"> ( Beer info : &#127866;)</a>'
             '</h2>',
             unsafe_allow_html=True)
     st.markdown(
-        '<h2 class="prop_degust_title">Tasting suggestion :</h2>',
+        '<h2 class="prop_degust_title">Tasting suggestion:</h2>',
         unsafe_allow_html=True)
     prop = 0
     for i in value:
