@@ -43,34 +43,26 @@ div[role="radiogroup"] {text-shadow : 1px 1px 3px white, 0 0 3px white}
 .st-bw, .st-cb{font-size : 1.5em;}
 .css-1ekf893 a {text-decoration : none; color : yellow; display : flex; text-align : center;}
 
-.return_title {font-weight: bold; color : white; font-size : 2em; display : flex; justify-content : center;}
-
-.return_link {justify-content: center; margin-top : -0.5em}
-
 .api_return {font-weight: bold; color : white; font-size : 1.2em}
-
 .border2 {color : white; padding : 0.5em}
-
 .beer_name_api_call {font-weight: bold; color : white; font-size:1.5em;}
-
 .beer_name_api_return {font-weight: bold; color : white; font-size : 3em; display : flex; text-align : center; justify-content : center;}
-
 .link_BA {margin : -1.5em; display : flex; justify-content : center;}
-
 .prop_degust {color : white; padding : 0.5em; text-align : center; font-size : 1.8em;text-decoration : underline}
 .prop_degust_title {color : white; padding : 0.5em; font-size : 2em; text-align : center;}
+.repeat_choice {color : white; padding : 0.5em; text-align : center; border : 1.5px solid white; font-size : 2em}
+.return_link {justify-content: center; margin-top : -0.5em}
+.return_title {font-weight: bold; color : white; font-size : 1.5em; display : flex; justify-content : center;}
 .suggestion_return_1 {margin-bottom: -1.5em;color : white;font-size : 1em; text-transform : capitalize;font-size : 1em;}
 .suggestion_return_2 {color : white;font-size : 1em; text-transform : capitalize;font-size : 1em; border-bottom : 2px solid white; padding-bottom : 1em}
-.repeat_choice {color : white; padding : 0.5em; text-align : center; border : 1.5px solid white; font-size : 2em}
 .select_title {color : white; padding : 0.5em; font-size : 2.5em}
 .slide_title {color : white; margin-bottom : -2em}
 .title1 {color : white; text-align : center; font-size : 4em; text-transform : uppercase;}
 .title2 {color : white; text-align : center;font-size : 2em; padding-bottom : 1em;text-transform : capitalize;}
 
-.bl_use_app {text-align : center; text-transform : uppercase; text-decoration : underline; color :purple}
-.bl_bold_underline {font-weight : bold; text-decoration : underline;}
-.bl_bold {font-weight : bold;}
-
+.side_bar_use_app {text-align : center; text-transform : uppercase; text-decoration : underline; color :purple}
+.side_bar_bold_underline {font-weight : bold; text-decoration : underline;}
+.side_bar_bold {font-weight : bold;}
 """
 
 st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
@@ -79,27 +71,27 @@ st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
 
 # how to use the app
 
-st.sidebar.markdown('<h2 class="bl_use_app">How to use the app : </h2>',
+st.sidebar.markdown('<h2 class="side_bar_use_app">How to use the app : </h2>',
                     unsafe_allow_html=True)
 st.sidebar.markdown(
-    '<div class="bl_bold_underline">Complite ONE of these feature :</div>',
+    '<div class="side_bar_bold_underline">Complite ONE of these feature :</div>',
     unsafe_allow_html=True)
 st.sidebar.markdown(
-    '<p style="padding-top : 1em"><span class="bl_bold">Enter</span> the name of a beer</p>',
+    '<p style="padding-top : 1em"><span class="side_bar_bold">Enter</span> the name of a beer</p>',
     unsafe_allow_html=True)
 st.sidebar.markdown(
-    '<p><span class="bl_bold">OR</span> Choose a Style (ex : IPA)</p>',
+    '<p><span class="side_bar_bold">OR</span> Choose a Style (ex : IPA)</p>',
     unsafe_allow_html=True)
 # st.sidebar.markdown(
-#     '<p><span class="bl_bold">OR</span> Choose a Taste (ex : Hoppy)</p>',
+#     '<p><span class="side_bar_bold">OR</span> Choose a Taste (ex : Hoppy)</p>',
 #     unsafe_allow_html=True)
 
-st.sidebar.markdown('<p><span class="bl_bold">AND</span> Choose ABV or IBU</p>',
+st.sidebar.markdown('<p><span class="side_bar_bold">AND</span> Choose ABV or IBU</p>',
                     unsafe_allow_html=True)
 
 #legend section
 
-st.sidebar.markdown('<h2 class="bl_use_app">legend : </h2>',
+st.sidebar.markdown('<h2 class="side_bar_use_app">legend : </h2>',
                     unsafe_allow_html=True)
 
 st.sidebar.markdown("""## ABV :""")
