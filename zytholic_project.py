@@ -46,6 +46,9 @@ div[role="radiogroup"]  .st-cc {font-size : 2em; color : white;}
 div[data-testid="stThumbValue"] {font-size : 1.5em; padding-bottom : 1em}
 div[data-testid="stTickBarMin"] {font-size : 1.5em}
 div[data-testid="stTickBarMax"] {font-size : 1.5em}
+div[data-baseweb="base-input"] .st-dg {font-size : 2em}
+div[data-baseweb="select"] .st-el {font-size : 2em}
+.css-2y0inq, .css-1d0tddh, .st-ed{font-size : 2em}
 
 .api_return {font-weight: bold; color : white; font-size : 1.2em}
 .border2 {color : white; padding : 0.5em}
