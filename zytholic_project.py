@@ -41,13 +41,21 @@ div[role="radiogroup"]{flex-flow : row; justify-content : center;}
 div[role="listbox"] ul {background-color :black;}
 div[role="radiogroup"] {text-shadow : 1px 1px 3px white, 0 0 3px white}
 .st-bw, .st-cb{font-size : 1.5em;}
-.css-1ekf893 a {text-decoration : none; color : yellow; display : flex; justify-content : center;}
+.css-1ekf893 a {text-decoration : none; color : yellow; display : flex; text-align : center;}
+
+.return_title {font-weight: bold; color : white; font-size : 2em; display : flex; justify-content : center;}
+
+.return_link {justify-content: center; margin-top : -0.5em}
 
 .api_return {font-weight: bold; color : white; font-size:2em}
 .border2 {color : white; padding : 0.5em}
-.beer_name_api_call {font-weight: bold; color : white; font-size:1.5em}
-.beer_name_api_return {font-weight: bold; color : white; font-size : 3em; display : flex; justify-content : center;}
-.link_BA {margin : -1.5em}
+
+.beer_name_api_call {font-weight: bold; color : white; font-size:1.5em;}
+
+.beer_name_api_return {font-weight: bold; color : white; font-size : 3em; display : flex; text-align : center; justify-content : center;}
+
+.link_BA {margin : -1.5em; display : flex; justify-content : center;}
+
 .prop_degust {color : white; padding : 0.5em; text-align : center; font-size : 1.8em;text-decoration : underline}
 .prop_degust_title {color : white; padding : 0.5em; font-size : 2.5em; text-align : center;}
 .proposition_return_1 {margin-bottom: -1.5em;color : white;font-size : 1em; text-transform : capitalize;font-size : 1em;}
@@ -203,7 +211,7 @@ if feature == 'Style':
 
 ################# PROPOSITION SELECTION section #################
 
-if feature =="Style":
+if feature == "Style":
     st.markdown(
         '<h2 class="repeat_choice">'
         f'Your Style\'s choice is : <span class="beer_name_api_call">{style}</span>'
@@ -215,6 +223,7 @@ for key, value in response.items():
     execpt_result = key
 
 if key == 'response':
+
     st.markdown(
         '<h2 class="repeat_choice">'
         f'The Beer : <span class="beer_name_api_call">{beer_name}</span></br></br>Doesn\'t exist in the database'
@@ -224,7 +233,7 @@ else:
     if feature =="Name":
         st.markdown(
             '<h2 class="repeat_choice">'
-            f'Your Beer name\'s choice was :</br><span class="beer_name_api_call">{beer_name}</span></br><a class="" href="https://www.beeradvocate.com/search/?q={beer_name}" target="_blank"> ( Beer info : &#127866;)</a>'
+            f'Your Beer name\'s choice was :</br><span class="return_title">{beer_name}</span></br><a class="return_link" href="https://www.beeradvocate.com/search/?q={beer_name}" target="_blank"> ( Beer info : &#127866;)</a>'
             '</h2>',
             unsafe_allow_html=True)
     st.markdown(
