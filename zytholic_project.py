@@ -37,9 +37,10 @@ CSS = """
 .reportview-container {background : rgba(0, 0, 0, 0.6);}
 .stSlider, .css-1iyw2u1, .css-1djdyxw{color : white;}
 .css-2y0inq, .css-1d0tddh  {color : white}
-div[role="radiogroup"]{flex-flow : row; justify-content : center;}
+
 div[role="listbox"] ul {background-color :black;}
-div[role="radiogroup"] {text-shadow : 1px 1px 3px white, 0 0 3px white}
+div[role="radiogroup"] {flex-flow : row; justify-content : center; }
+div[role="radiogroup"]  .st-cc {font-size : 2em; color : white;}
 .st-bw, .st-cb{font-size : 1.5em;}
 .css-1ekf893 a {text-decoration : none; color : yellow; display : flex; text-align : center;}
 
