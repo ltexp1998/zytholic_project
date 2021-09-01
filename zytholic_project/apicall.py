@@ -39,7 +39,7 @@ def get_most_similar_beers(name, n_beers=5, similarity='cosine'):
 
     # Import the model as a pickle
     with open("assets/dataframe.pkl", "rb") as file:
-            working_df = pickle.load(file)
+        working_df = pickle.load(file)
 
 
     # Get similarity scores between beers
@@ -78,39 +78,43 @@ def get_most_similar_beers_ibu_abv(name,
     model.X = model.preprocess.transform(model.working_df) """
 
     # Import the model as a pickle
-    model = pickle.load("assets/model.pkl")
+    with open("assets/dataframe.pkl", "rb") as file:
+        working_df = pickle.load(file)
 
     # Get similarity scores between beers
     # To extract for function and to be executed only once
     if similarity == 'cosine':
-        kernel = model.cosine_sim
+        with open("assets/cosine.pkl", "rb") as file:
+            kernel = pickle.load(file)
     elif similarity == 'sigmoid':
-        kernel = model.sigmoid_sim
+        with open("assets/sigmoid.pkl", "rb") as file:
+            kernel = pickle.load(file)
     elif similarity == 'linear':
-        kernel = model.linear_sim
+        with open("assets/linear.pkl", "rb") as file:
+            kernel = pickle.load(file)
 
     # Filter results if IBU or ABV are specified
     if ibu is not None:
-        bad_index_ibu = model.working_df[model.working_df['max ibu'] > ibu]
+        bad_index_ibu = working_df[working_df['max ibu'] > ibu]
         bad_index_ibu = set(bad_index_ibu.index)
     else:
         bad_index_ibu = set()
 
     if abv is not None:
-        bad_index_abv = model.working_df[model.working_df['abv'] > abv]
+        bad_index_abv = working_df[working_df['abv'] > abv]
         bad_index_abv = set(bad_index_abv.index)
     else:
         bad_index_abv = set()
 
     bad_indexes = bad_index_abv.union(bad_index_ibu)
     # keep current beer position in kernel
-    name_position = get_name_index(name, model.working_df)
+    name_position = get_name_index(name, working_df)
     bad_indexes.discard(int(name_position))
     bad_indexes = list(bad_indexes)
 
     # Get the recommendation
     results = get_recommendations(
-        model.working_df, name,
+        working_df, name,
         sim_matrix=kernel,
         n_recomm=n_beers,
         ignore_index_beers=bad_indexes)
@@ -133,19 +137,20 @@ def get_similar_style(
     Possibility to limit the alcohol content and bitterness
     """
 
-    """ # Import data, preprocess it
+    # Import data, preprocess it
     # To extract for function and to be executed only once
     model = BaseModel()
     model.get_data()
     model.set_preprocess_pipeline()
     model.preprocess.fit(model.working_df)
-    model.X = model.preprocess.transform(model.working_df) """
+    model.X = model.preprocess.transform(model.working_df)
 
     # Import the model as a pickle
-    model = joblib.load("assets/model.joblib")
+    with open("assets/dataframe.pkl", "rb") as file:
+        working_df = pickle.load(file)
 
     # Get average features for a given style
-    style_df = model.working_df[model.working_df['style'] == style]
+    style_df = working_df[working_df['style'] == style]
     style_df = style_df.index
     style_df = model.X[style_df, :]
     style_df = style_df.mean(axis=0).reshape(1,-1)
@@ -153,11 +158,11 @@ def get_similar_style(
     # Get similarity scores between beers
     # To extract for function and to be executed only once
     if similarity == 'cosine':
-        kernel = model.cosine_sim
+        kernel = cosine_similarity(style_df, model.X)
     elif similarity == 'sigmoid':
-        kernel = model.sigmoid_sim
+        kernel =  sigmoid_kernel(style_df,  model.X)
     elif similarity == 'linear':
-        kernel = model.linear_sim
+        kernel = linear_kernel(style_df, model.X)
 
     # Filter results if IBU or ABV are specified
     if ibu is not None:
