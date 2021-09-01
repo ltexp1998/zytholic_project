@@ -9,7 +9,7 @@ from sklearn.pipeline import make_pipeline
 
 from sklearn.compose import make_column_transformer
 from sklearn.metrics.pairwise import cosine_similarity, sigmoid_kernel,linear_kernel
-import pickle
+import joblib
 
 class BaseModel():
     """"
@@ -128,30 +128,32 @@ class BaseModel():
         self.X = self.preprocess.transform(self.working_df)
         return self
     
+
+        
+    def calculate_distances(self):
+        """
+        Calculate 3 similarity matrices for cosine, sigmoid and linear distance
+        The data are saved as 'Float32' to reduce size on disk
+        """
+        self.cosine_sim = cosine_similarity(self.X, self.X).astype("float32")
+        self.sigmoid_sim = sigmoid_kernel(self.X,  self.X).astype("float32")
+        self.linear_sim = linear_kernel(self.X, self.X).astype("float32")
+        print('Datafile with similarity distances saved')
+        return self
+
     def save_model(self):
-        """Save model with original and preprocessed as a joblib"""
-        with open("assets/model.pkl", "wb") as file:
-            pickle.dump(self, file)
+        """Save model with original and preprocessed data as a joblib"""
+        with open("assets/model.joblib", "wb") as file:
+            joblib.dump(self, file)
         print('Model saved')
         pass
-        
-    def save_calculated_distances(self):
-        """"""
-        cosine_sim = cosine_similarity(self.X, self.X)
-        pd.DataFrame(cosine_sim).to_csv('assets/cosine.csv', index=False)
-        sigmoid_sim = sigmoid_kernel(self.X,  self.X)
-        pd.DataFrame(sigmoid_sim).to_csv('assets/sigmoid.csv', index=False)
-        linear_sim = linear_kernel(self.X, self.X)
-        pd.DataFrame(linear_sim).to_csv('assets/linear.csv', index=False)
-        print('Datafile with similarity distances saved')
-        pass
-
+    
     
 if __name__ == '__main__':
     model = BaseModel()
     model.get_data()
     model.set_preprocess_pipeline()
     model.process_whole_dataset()
+    model.calculate_distances()
     model.save_model()
-    model.save_calculated_distances()
     print('Initialization complete ! The CSVs and for the API are ready')
