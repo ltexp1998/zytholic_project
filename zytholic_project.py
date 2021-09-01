@@ -43,6 +43,9 @@ div[role="radiogroup"] {flex-flow : row; justify-content : center; }
 div[role="radiogroup"]  .st-cc {font-size : 2em; color : white;}
 .st-bw, .st-cb{font-size : 1.5em;}
 .css-1ekf893 a {text-decoration : none; color : yellow; display : flex; text-align : center;}
+div[data-testid="stThumbValue"] {font-size : 1.5em; padding-bottom : 1em}
+div[data-testid="stTickBarMin"] {font-size : 1.5em}
+div[data-testid="stTickBarMax"] {font-size : 1.5em}
 
 .api_return {font-weight: bold; color : white; font-size : 1.2em}
 .border2 {color : white; padding : 0.5em}
@@ -57,7 +60,7 @@ div[role="radiogroup"]  .st-cc {font-size : 2em; color : white;}
 .suggestion_return_1 {margin-bottom: -1.5em;color : white;font-size : 1em; text-transform : capitalize;font-size : 1em;}
 .suggestion_return_2 {color : white;font-size : 1em; text-transform : capitalize;font-size : 1em; border-bottom : 2px solid white; padding-bottom : 1em}
 .select_title {color : white; padding : 0.5em; font-size : 2.5em}
-.slide_title {color : white; margin-bottom : -2em}
+.slide_title {color : white; margin-bottom : -2em; font-size : 1.5em}
 .title1 {color : white; text-align : center; font-size : 4em; text-transform : uppercase;}
 .title2 {color : white; text-align : center;font-size : 2em; padding-bottom : 1em;text-transform : capitalize;}
 
