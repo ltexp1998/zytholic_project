@@ -1,4 +1,5 @@
 from zytholic_project.apicall import check_name, get_most_similar_beers
+import pandas as pd
 
 def test_check_name():
     assert(check_name('Our Special Ale 2019 (Anchor Christmas Ale)') =='Our Special Ale 2019 (Anchor Christmas Ale)')
@@ -10,8 +11,8 @@ def test_check_name():
     
 
 def test_get_most_similar_beers():
-    assert get_most_similar_beers('Gaffel Kölsch', n_beers=5).shape\
-            == (5, 4)
-    assert get_most_similar_beers('Donnybrook Stout', n_beers=8).shape\
-            == (8, 4)
-    assert get_most_similar_beers('Donnybaearrook Stout') == None
+
+    assert type(get_most_similar_beers('Gaffel Kölsch', n_beers=5)) == dict
+    data = pd.DataFrame.from_dict(get_most_similar_beers('Donnybrook Stout', n_beers=8))
+    assert data.shape == (8+1, 6)
+    assert get_most_similar_beers('Donnybaearrook Stout') == {'response': 'Donnybaearrook Stout is not a valid name'}
