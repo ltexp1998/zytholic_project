@@ -207,4 +207,5 @@ if __name__ == '__main__':
     print(check_name('Duvel'))
     print(check_name('Budweiser'))
     print(get_most_similar_beers('Amber'))
-    #print(get_similar_style('Stout', ibu=70, abv=6))
+    print(get_most_similar_beers_ibu_abv('Duvel', ibu=70, abv=6))
+    print(get_similar_style('Stout', ibu=70, abv=6))
