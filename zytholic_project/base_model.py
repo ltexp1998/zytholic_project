@@ -10,6 +10,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.compose import make_column_transformer
 from sklearn.metrics.pairwise import cosine_similarity, sigmoid_kernel,linear_kernel
 import joblib
+import pickle
 
 class BaseModel():
     """"
@@ -143,8 +144,12 @@ class BaseModel():
 
     def save_model(self):
         """Save model with original and preprocessed data as a joblib"""
-        with open("assets/model.joblib", "wb") as file:
-            joblib.dump(self, file)
+        with open("assets/dataframe.pkl", "wb") as file:
+            pickle.dump(self.working_df, file)
+        with open("assets/cosine.pkl", "wb") as file:
+            pickle.dump(self.cosine_sim, file)
+        with open("assets/sigmoid.pkl", "wb") as file:
+            pickle.dump(self.sigmoid_sim, file)
         print('Model saved')
         pass
     

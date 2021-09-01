@@ -2,6 +2,7 @@ from operator import mod
 from os import symlink
 import pandas as pd
 import joblib
+import pickle
 from zytholic_project.base_model import BaseModel
 from zytholic_project.evaluate import get_recommendations, get_name_index
 from sklearn.metrics.pairwise import cosine_similarity, sigmoid_kernel,linear_kernel
@@ -35,17 +36,22 @@ def get_most_similar_beers(name, n_beers=5, similarity='cosine'):
     model.X = model.preprocess.transform(model.working_df) """
 
     # Import the model as a pickle
-    model = joblib.load("assets/model.joblib")
+    with open("assets/dataframe.pkl", "rb") as file:
+            working_df = pickle.load(file)
+
 
     # Get similarity scores between beers
     # To extract for function and to be executed only once
     if similarity == 'cosine':
-        kernel = model.cosine_sim
+        with open("assets/cosine.pkl", "rb") as file:
+            kernel = pickle.load(file)
     elif similarity == 'sigmoid':
-        kernel = model.sigmoid_sim
+        with open("assets/sigmoid.pkl", "rb") as file:
+            kernel = pickle.load(file)
     elif similarity == 'linear':
-        kernel = model.linear_sim
-    results = get_recommendations(model.working_df, name,
+        with open("assets/linear.pkl", "rb") as file:
+            kernel = pickle.load(file)
+    results = get_recommendations(working_df, name,
                       sim_matrix=kernel, n_recomm=n_beers)
     results = results[['name', 'brewery', 'style', 'abv', 'min ibu', 'max ibu']]
 
@@ -70,7 +76,7 @@ def get_most_similar_beers_ibu_abv(name,
     model.X = model.preprocess.transform(model.working_df) """
 
     # Import the model as a pickle
-    model = joblib.load("assets/model.joblib")
+    model = pickle.load("assets/model.pkl")
 
     # Get similarity scores between beers
     # To extract for function and to be executed only once
@@ -190,4 +196,5 @@ if __name__ == '__main__':
     # print(check_name('Gaffel Kölsch'))
     # print(check_name('abcde') == 'Invalid Name')
     # print(check_name('Longist Trail Ale') == 'Invalid Name')
-    print(get_similar_style('Stout', ibu=70, abv=6))
+    print(get_most_similar_beers('Amber'))
+    #print(get_similar_style('Stout', ibu=70, abv=6))
