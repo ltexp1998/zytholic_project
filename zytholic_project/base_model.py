@@ -6,8 +6,10 @@ from sklearn import set_config; set_config(display='diagram')
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler, OneHotEncoder
 from sklearn.pipeline import make_pipeline
-from sklearn.cluster import KMeans
+
 from sklearn.compose import make_column_transformer
+from sklearn.metrics.pairwise import cosine_similarity, sigmoid_kernel,linear_kernel
+import pickle
 
 class BaseModel():
     """"
@@ -22,12 +24,14 @@ class BaseModel():
 
     def get_data(self):
         """Merge data from Beers and Breweries using top-information as reference"""
-        dfbrew = pd.read_csv("../raw_data/Beers_Breweries_and_Beer Reviews/breweries.csv")
-        dfbeer = pd.read_csv("../raw_data/beers_style_renamed.csv")
-        dftop = pd.read_csv("../raw_data/top_beer_info_style_renamed.csv")
+        dfbrew = pd.read_csv("raw_data/Beers_Breweries_and_Beer Reviews/breweries.csv")
+        dfbeer = pd.read_csv("raw_data/beers_style_renamed.csv")
+        dfbeer['name'] = dfbeer['name'].astype(str).str.title()
+        dftop = pd.read_csv("raw_data/top_beer_info_style_renamed.csv")
+        dftop['name'] = dftop['name'].astype(str).str.title()
 
         #read correspondance brewery
-        corres_xls = pd.read_csv('../assets/matching_brewery_names.csv')
+        corres_xls = pd.read_csv('assets/matching_brewery_names.csv')
         corres_xls.set_index('bbr', inplace=True)
         corres= corres_xls.to_dict()
 
@@ -59,7 +63,7 @@ class BaseModel():
         """
 
         # Get matching table for styles names and format it
-        style_csv = pd.read_csv('../assets/style_convert.csv')
+        style_csv = pd.read_csv('assets/style_convert.csv')
         style_csv = style_csv[['Converted', 'Simplified']]
 
         # creation of a dictionary to replace automatically
@@ -107,7 +111,7 @@ class BaseModel():
         self.preprocess = preprocess
         return self
 
-    def process_data(self):
+    def train_test_process_data(self):
         """Split dataset before fitting the model"""
         X_train, X_test = train_test_split(self.working_df,
                                            test_size=0.25,
@@ -118,9 +122,44 @@ class BaseModel():
         self.X_train_proc = self.preprocess.transform(X_train)
         self.X_test_proc = self.preprocess.transform(X_test)
         return self
-
-    def fit(self, clusts=20):
-        """Actual fit using KMeans algorithm"""
-        self.kmeans_fit = KMeans(n_clusters=clusts)
-        self.kmeans_fit.fit(self.X_train_proc)
+    
+    def process_whole_dataset(self):
+        """Fit the pipeline on the whole dataset
+        Returns np array for matrix distance calculation"""
+        self.preprocess.fit(self.working_df)
+        self.X = self.preprocess.transform(self.working_df)
         return self
+    
+
+        
+    def calculate_distances(self):
+        """
+        Calculate 3 similarity matrices for cosine, sigmoid and linear distance
+        The data are saved as 'Float32' to reduce size on disk
+        """
+        self.cosine_sim = cosine_similarity(self.X, self.X).astype("float32")
+        self.sigmoid_sim = sigmoid_kernel(self.X,  self.X).astype("float32")
+        self.linear_sim = linear_kernel(self.X, self.X).astype("float32")
+        print('Datafile with similarity distances saved')
+        return self
+
+    def save_model(self):
+        """Save model with original and preprocessed data as a joblib"""
+        with open("assets/dataframe.pkl", "wb") as file:
+            pickle.dump(self.working_df, file)
+        with open("assets/cosine.pkl", "wb") as file:
+            pickle.dump(self.cosine_sim, file)
+        with open("assets/sigmoid.pkl", "wb") as file:
+            pickle.dump(self.sigmoid_sim, file)
+        print('Model saved')
+        pass
+    
+    
+if __name__ == '__main__':
+    model = BaseModel()
+    model.get_data()
+    model.set_preprocess_pipeline()
+    model.process_whole_dataset()
+    model.calculate_distances()
+    model.save_model()
+    print('Initialization complete ! The CSVs and for the API are ready')
