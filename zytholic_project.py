@@ -47,7 +47,8 @@ div[role="radiogroup"] {text-shadow : 1px 1px 3px white, 0 0 3px white}
 
 .return_link {justify-content: center; margin-top : -0.5em}
 
-.api_return {font-weight: bold; color : white; font-size:2em}
+.api_return {font-weight: bold; color : white; font-size : 1.2em}
+
 .border2 {color : white; padding : 0.5em}
 
 .beer_name_api_call {font-weight: bold; color : white; font-size:1.5em;}
@@ -57,9 +58,9 @@ div[role="radiogroup"] {text-shadow : 1px 1px 3px white, 0 0 3px white}
 .link_BA {margin : -1.5em; display : flex; justify-content : center;}
 
 .prop_degust {color : white; padding : 0.5em; text-align : center; font-size : 1.8em;text-decoration : underline}
-.prop_degust_title {color : white; padding : 0.5em; font-size : 2.5em; text-align : center;}
-.proposition_return_1 {margin-bottom: -1.5em;color : white;font-size : 1em; text-transform : capitalize;font-size : 1em;}
-.proposition_return_2 {color : white;font-size : 1em; text-transform : capitalize;font-size : 1em; border-bottom : 2px solid white; padding-bottom : 1em}
+.prop_degust_title {color : white; padding : 0.5em; font-size : 2em; text-align : center;}
+.suggestion_return_1 {margin-bottom: -1.5em;color : white;font-size : 1em; text-transform : capitalize;font-size : 1em;}
+.suggestion_return_2 {color : white;font-size : 1em; text-transform : capitalize;font-size : 1em; border-bottom : 2px solid white; padding-bottom : 1em}
 .repeat_choice {color : white; padding : 0.5em; text-align : center; border : 1.5px solid white; font-size : 2em}
 .select_title {color : white; padding : 0.5em; font-size : 2.5em}
 .slide_title {color : white; margin-bottom : -2em}
@@ -145,7 +146,7 @@ if feature == 'Name':
 elif feature == 'Style':
     st.markdown('<h2 class="select_title">Style Selection : (Choose one)</h2>',unsafe_allow_html=True)
 
-    if st.checkbox('Click here to "special" style (ex : Barleywine or Rye)'):
+    if st.checkbox('Click here to "special" style (like : Barleywine or Rye)'):
         style = st.selectbox("", [
             "Lambic", 'Lambic', 'Smoked', 'Rye', 'Barleywine', 'Bitter',
             'Brett', 'Altbier', 'Dubbel', 'Steam Beer', 'NEIPA', 'Ale Old',
@@ -209,7 +210,7 @@ if feature == 'Style':
 
 #st.sidebar.markdown(f'test : {response}')
 
-################# PROPOSITION SELECTION section #################
+################# suggestion SELECTION section #################
 
 if feature == "Style":
     st.markdown(
@@ -237,7 +238,7 @@ else:
             '</h2>',
             unsafe_allow_html=True)
     st.markdown(
-        '<h2 class="prop_degust_title">Tasting proposition :</h2>',
+        '<h2 class="prop_degust_title">Tasting suggestion :</h2>',
         unsafe_allow_html=True)
     prop = 0
     for i in value:
@@ -252,11 +253,11 @@ else:
             pass
         if prop > 0 :
             st.markdown(
-                '<p class = "proposition_return_1">'
-                f'<span class="prop_degust">Proposition {prop}</span> : </br><span class="beer_name_api_return">{name}</span></br><a class="link_BA" href="https://www.beeradvocate.com/search/?q={name} {brewery}" target="_blank"> ( Beer info : &#127866;)</a></br><span class="api_return">{abv}°</span> alc </br> style : <span class="api_return">{style}</span> </br> made by brewery : <span class="api_return">{brewery}</span>'
+                '<p class = "suggestion_return_1">'
+                f'<span class="prop_degust">suggestion {prop}</span> : </br><span class="beer_name_api_return">{name}</span></br><a class="link_BA" href="https://www.beeradvocate.com/search/?q={name} {brewery}" target="_blank"> ( Beer info : &#127866;)</a></br><span class="api_return">{abv}°</span> alc </br> style : <span class="api_return">{style}</span> </br> made by brewery : <span class="api_return">{brewery}</span>'
                 '</p>'
                 '</br>'
-                '<p class = "proposition_return_2">'
+                '<p class = "suggestion_return_2">'
                 f'Mean IBU : <span class="api_return">{ibu}</span>'
                 '</p>',
                 unsafe_allow_html=True)
