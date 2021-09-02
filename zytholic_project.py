@@ -239,7 +239,12 @@ else:
     st.markdown(
         '<h2 class="prop_degust_title">Tasting suggestion:</h2>',
         unsafe_allow_html=True)
-    prop = 0
+
+    if feature == "Name":
+        prop = 0
+    else :
+        prop = 1
+
     for i in value:
         choice = response['name'][i]
         name = response['name'][i]
