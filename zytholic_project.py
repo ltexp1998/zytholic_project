@@ -176,7 +176,7 @@ st.markdown('    ')
 # ABV and IBU SLIDEBAR section
 
 st.markdown('<p class="slide_title">ABV (%/Vol):</p>', unsafe_allow_html=True)
-option_ABV = st.slider('', min_value=0., max_value=20., value=8., step=0.1)
+option_ABV = st.slider('', min_value=0., max_value=20., value=8.5, step=0.1)
 st.markdown('<p class="slide_title">IBU:</p>', unsafe_allow_html=True)
 option_IBU = st.slider('', min_value = 0, max_value = 100, value = 50, step = 1)
 
@@ -239,7 +239,12 @@ else:
     st.markdown(
         '<h2 class="prop_degust_title">Tasting suggestion:</h2>',
         unsafe_allow_html=True)
-    prop = 0
+
+    if feature == "Name":
+        prop = 0
+    else :
+        prop = 1
+
     for i in value:
         choice = response['name'][i]
         name = response['name'][i]
