@@ -14,7 +14,7 @@ import pickle
 with open('assets/dataframe.pkl', 'rb') as file:
     df = pickle.load(file)
 
-beers = df["name"].sort_values().to_list()
+beers = df["name"].sort_values().iloc[3:].to_list()
 beers.insert(0, '')
 
 #### background image function
