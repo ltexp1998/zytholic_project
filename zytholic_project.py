@@ -2,18 +2,24 @@ import streamlit as st
 import requests
 import base64
 import pandas as pd
+import pickle
 
 
 ################# BACKGROUND IMAGE section #################
 
 # Function founded on the streamlit blog to have a local storage background image and available on https://github.com/streamlit/streamlit/issues/3073
 
+with open('assets/dataframe.pkl', 'rb') as file:
+    df = pickle.load(file)
+
+beers = df["name"]
+
 def get_base64(bin_file):
     with open(bin_file, 'rb') as f:
         data = f.read()
     return base64.b64encode(data).decode()
 
-def set_background(png_file):
+""" def set_background(png_file):
     bin_str = get_base64(png_file)
     page_bg_img = '''
     <style>
@@ -23,56 +29,15 @@ def set_background(png_file):
     background-color : rgba(0,0,255,0.3)
     </style>
     ''' % bin_str
-    st.markdown(page_bg_img, unsafe_allow_html=True)
+    st.markdown(page_bg_img, unsafe_allow_html=True) """
 
-set_background('./assets/img/beer.png')
+# set_background('./assets/img/beer.png')
 
 ################# BACKGROUND IMAGE CREDIT ON HTML #################
 
 st.markdown('<p style="visibility : hidden">Image credit : https://urlz.fr/gm4x"</p>', unsafe_allow_html=True)
 
 ################# CSS custom section #################
-
-CSS = """
-.reportview-container {background : rgba(0, 0, 0, 0.6);}
-.stSlider, .css-1iyw2u1, .css-1djdyxw{color : white;}
-.css-2y0inq, .css-1d0tddh  {color : white}
-
-div[role="listbox"] ul {background-color :black;}
-div[role="radiogroup"] {flex-flow : row; justify-content : center; }
-div[role="radiogroup"]  .st-cc {font-size : 2em; color : white;}
-.st-bw, .st-cb{font-size : 1.5em;}
-.css-1ekf893 a {text-decoration : none; color : yellow; display : flex; text-align : center;}
-div[data-testid="stThumbValue"] {font-size : 1.5em; padding-bottom : 1em}
-div[data-testid="stTickBarMin"] {font-size : 1.5em}
-div[data-testid="stTickBarMax"] {font-size : 1.5em}
-div[data-baseweb="base-input"] .st-dg {font-size : 2em}
-div[data-baseweb="select"] .st-el {font-size : 2em}
-.css-2y0inq, .css-1d0tddh, .st-ed{font-size : 2em}
-
-.api_return {font-weight: bold; color : white; font-size : 1.2em}
-.border2 {color : white; padding : 0.5em}
-.beer_name_api_call {font-weight: bold; color : white; font-size:1.5em;}
-.beer_name_api_return {font-weight: bold; color : white; font-size : 3em; display : flex; text-align : center; justify-content : center;}
-.link_BA {margin : -1.5em; display : flex; justify-content : center;}
-.prop_degust {color : white; padding : 0.5em; text-align : center; font-size : 1.8em;text-decoration : underline}
-.prop_degust_title {color : white; padding : 0.5em; font-size : 2em; text-align : center;}
-.repeat_choice {color : white; padding : 0.5em; text-align : center; border : 1.5px solid white; font-size : 2em}
-.return_link {justify-content: center; margin-top : -0.5em}
-.return_title {font-weight: bold; color : white; font-size : 1.5em; display : flex; justify-content : center;}
-.suggestion_return_1 {margin-bottom: -1.5em;color : white;font-size : 1em; text-transform : capitalize;font-size : 1em;}
-.suggestion_return_2 {color : white;font-size : 1em; text-transform : capitalize;font-size : 1em; border-bottom : 2px solid white; padding-bottom : 1em}
-.select_title {color : white; padding : 0.5em; font-size : 2.5em}
-.slide_title {color : white; margin-bottom : -2em; font-size : 1.5em}
-.title1 {color : white; text-align : center; font-size : 4em; text-transform : uppercase;}
-.title2 {color : white; text-align : center;font-size : 2em; padding-bottom : 1em;text-transform : capitalize;}
-
-.side_bar_use_app {text-align : center; text-transform : uppercase; text-decoration : underline; color :purple}
-.side_bar_bold_underline {font-weight : bold; text-decoration : underline;}
-.side_bar_bold {font-weight : bold;}
-"""
-
-st.write(f'<style>{CSS}</style>', unsafe_allow_html=True)
 
 ################# SIDE BAR #################
 
@@ -138,7 +103,8 @@ st.markdown('    ')
 if feature == 'Name':
     st.markdown('<h2 class="select_title">Enter a beer name:</h2>',unsafe_allow_html=True)
     # return the beer's name with all entry capitalize to match with the dataset :
-    beer_name = st.text_input('', '').title()
+    beer_name = st.selectbox("", beers)
+
 
 # STYLE SELECTION section
 
