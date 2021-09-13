@@ -1,4 +1,4 @@
-from zytholic_project.apicall import check_name, get_most_similar_beers
+from zytholic_project.apicall import bad_country_filter, check_name, get_most_similar_beers
 from zytholic_project.apicall import get_most_similar_beers_ibu_abv
 from zytholic_project.apicall import get_similar_style 
 import pandas as pd
@@ -26,6 +26,18 @@ def test_get_most_similar_beers_ibu_abv():
                 get_most_similar_beers_ibu_abv('Amber', ibu=70, abv=5))
         assert data.abv.max() <= 5
         assert data['max ibu'].max() <= 70
+               
+# Country test
+# Test that all indexes from different countries are removed
+
+# Test that function return only a dataframe of the good country
+def test_get_similar_style_with_country():
+        data =  pd.DataFrame.from_dict(
+                get_most_similar_beers_ibu_abv('Amber', ibu=40, abv=6, input_country='FR')
+                )
+        data = data.iloc[1:, :] # Removes input bier from the results
+        assert len(data.country.unique()) == 1
+        assert data.country.unique()[0] == 'FR'
         
 def test_get_similar_style():
         data = pd.DataFrame.from_dict(
@@ -33,3 +45,10 @@ def test_get_similar_style():
         assert (data['style'] == 'Stout').sum() > 3
         assert data.abv.max() <= 6
         assert data['max ibu'].max() <= 40
+
+
+def test_bad_country_filter():
+        # Just a dummy creation for function call
+        data = pd.DataFrame.from_dict(
+            get_most_similar_beers('Donnybrook Stout', n_beers=8))
+        assert bad_country_filter(data) == []
