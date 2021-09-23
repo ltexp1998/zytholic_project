@@ -199,13 +199,14 @@ option_IBU = st.slider('', min_value = 0, max_value = 100, value = 50, step = 1)
 
 url_local = 'http://localhost:1234'
 url_docker = 'http://0.0.0.0:5000'
-url_distant = 'https://api-zytholic-project-uq4l4l4m7a-ew.a.run.app'
+url_gcp = 'https://api-zytholic-project-uq4l4l4m7a-ew.a.run.app'
+url_O2 = 'http://thst7353.odns.fr/api/'
 
 ################# API BEER NAME #################
 
 if feature == 'Name':
     API_call_name = (
-        f'{url_distant}/filter_abv_ibu?name={beer_name}&abv={option_ABV}&ibu={option_IBU}'
+        f'{url_O2}/filter_abv_ibu?name={beer_name}&abv={option_ABV}&ibu={option_IBU}'
     )
     response = requests.get(API_call_name).json()
 
@@ -214,7 +215,7 @@ if feature == 'Name':
 if feature == 'Style':
 
     API_call_style = (
-        f'{url_distant}/style_search?style={style}&abv={option_ABV}&ibu={option_IBU}'
+        f'{url_O2}/style_search?style={style}&abv={option_ABV}&ibu={option_IBU}'
     )
     response = requests.get(API_call_style).json()
 
