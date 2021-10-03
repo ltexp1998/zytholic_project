@@ -111,6 +111,7 @@ def get_similar_style(
         style,
         abv=None,
         ibu=None,
+        input_country=None,
         n_beers=5,
         similarity='cosine'):
     """
@@ -145,19 +146,12 @@ def get_similar_style(
     elif similarity == 'linear':
         kernel = linear_kernel(style_df, model.X)
 
-    # Filter results if IBU or ABV are specified
-    if ibu is not None:
-        bad_index_ibu = model.working_df[model.working_df['max ibu'] > ibu]
-        bad_index_ibu = set(bad_index_ibu.index)
-    else:
-        bad_index_ibu = set()
-
-    if abv is not None:
-        bad_index_abv = model.working_df[model.working_df['abv'] > abv]
-        bad_index_abv = set(bad_index_abv.index)
-    else:
-        bad_index_abv = set()
-    bad_indexes = bad_index_abv.union(bad_index_ibu)
+    # Get list of index that don't match ABV, IBU or Country
+    bad_index_ibu = filter_bad_ibu(working_df, ibu)
+    bad_index_abv = filter_bad_abv(working_df, abv)    
+    bad_idx_countries = filter_bad_countries(working_df, input_country)
+    # concatenates list and keeps unique elements
+    bad_indexes = set(bad_index_abv + bad_index_ibu + bad_idx_countries)
 
     # Extract most similar beers after sorting
     score = sorted(
