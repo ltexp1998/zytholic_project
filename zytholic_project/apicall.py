@@ -6,7 +6,7 @@ import pickle
 from zytholic_project.base_model import BaseModel
 from zytholic_project.evaluate import get_recommendations, get_name_index
 from sklearn.metrics.pairwise import cosine_similarity, sigmoid_kernel,linear_kernel
-
+from zytholic_project.filter_out_propositions import bad_country_filter
 
 def check_name(name):
     """
@@ -187,15 +187,6 @@ def get_similar_style(
                        'min ibu', 'max ibu']]
 
     return results.to_dict()
-
-def bad_country_filter(df, country=None):
-    """From a dataframe, return a list of all indexes where the country
-    doesn't match the one specified in the function call"""
-    if country is None:
-        return list()
-    bad_indices = np.where(df.country != country)[0]
-    return bad_indices.tolist()
-
 
 
 if __name__ == '__main__':
