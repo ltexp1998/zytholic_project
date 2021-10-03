@@ -6,7 +6,7 @@ import pickle
 from zytholic_project.base_model import BaseModel
 from zytholic_project.evaluate import get_recommendations, get_name_index
 from sklearn.metrics.pairwise import cosine_similarity, sigmoid_kernel,linear_kernel
-from zytholic_project.filter_out_propositions import bad_country_filter
+from zytholic_project.filter_out_propositions import filter_bad_countries, filter_bad_abv, filter_bad_ibu
 
 def check_name(name):
     """
@@ -80,22 +80,13 @@ def get_most_similar_beers_ibu_abv(name,
         with open("assets/linear.pkl", "rb") as file:
             kernel = pickle.load(file)
 
-    # Filter results if IBU or ABV are specified
-    if ibu is not None:
-        bad_index_ibu = working_df[working_df['max ibu'] > ibu]
-        bad_index_ibu = set(bad_index_ibu.index)
-    else:
-        bad_index_ibu = set()
-
-    if abv is not None:
-        bad_index_abv = working_df[working_df['abv'] > abv]
-        bad_index_abv = set(bad_index_abv.index)
-    else:
-        bad_index_abv = set()
+    # Get list of index that don't match ABV, IBU or Country
+    bad_index_ibu = filter_bad_ibu(working_df, ibu)
+    bad_index_abv = filter_bad_abv(working_df, abv)    
+    bad_idx_countries = filter_bad_countries(working_df, input_country)
+    # concatenates list and keeps unique elements
+    bad_indexes = set(bad_index_abv + bad_index_ibu + bad_idx_countries)
     
-    bad_idx_countries = bad_country_filter(working_df, input_country)
-
-    bad_indexes = bad_index_abv.union(bad_index_ibu).union(bad_idx_countries)
     # keep current beer position in kernel
     name_position = get_name_index(name, working_df)
     bad_indexes.discard(int(name_position))

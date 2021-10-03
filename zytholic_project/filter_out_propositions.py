@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-def bad_country_filter(dataframe, country=None):
+def filter_bad_countries(dataframe, country=None):
     """From a dataframe, return a list of all indexes where the country
     doesn't match the one specified in the function call"""
     if country is None:
