@@ -1,6 +1,7 @@
 from operator import mod
 from os import symlink
 import pandas as pd
+import numpy as np
 import pickle
 from zytholic_project.base_model import BaseModel
 from zytholic_project.evaluate import get_recommendations, get_name_index
@@ -52,9 +53,13 @@ def get_most_similar_beers(name, n_beers=5, similarity='cosine'):
 def get_most_similar_beers_ibu_abv(name,
                            ibu,
                            abv,
-                           n_beers=5, similarity='cosine'):
+                           input_country=None,
+                           n_beers=5, 
+                           similarity='cosine'):
     """
-    Check that name is valid
+    Main function to return beer from the API interrogation
+    Possibility to adjust, alcohol, bitterness (IBU), country of origin
+    as well as number of recommendations and type of algorithm
     """
     if check_name(name) != name:
         return {'response': f'{name} is not a valid name'}
@@ -87,8 +92,10 @@ def get_most_similar_beers_ibu_abv(name,
         bad_index_abv = set(bad_index_abv.index)
     else:
         bad_index_abv = set()
+    
+    bad_idx_countries = bad_country_filter(working_df, input_country)
 
-    bad_indexes = bad_index_abv.union(bad_index_ibu)
+    bad_indexes = bad_index_abv.union(bad_index_ibu).union(bad_idx_countries)
     # keep current beer position in kernel
     name_position = get_name_index(name, working_df)
     bad_indexes.discard(int(name_position))
@@ -103,7 +110,8 @@ def get_most_similar_beers_ibu_abv(name,
 
     results = results[['name', 'brewery',
                        'style', 'abv',
-                       'min ibu', 'max ibu']]
+                       'min ibu', 'max ibu',
+                       'country']]
 
     return results.to_dict()
 
@@ -179,6 +187,16 @@ def get_similar_style(
                        'min ibu', 'max ibu']]
 
     return results.to_dict()
+
+def bad_country_filter(df, country=None):
+    """From a dataframe, return a list of all indexes where the country
+    doesn't match the one specified in the function call"""
+    if country is None:
+        return list()
+    bad_indices = np.where(df.country != country)[0]
+    return bad_indices.tolist()
+
+
 
 if __name__ == '__main__':
     # print(check_name('Our Special Ale 2019 (Anchor Christmas Ale)'))
