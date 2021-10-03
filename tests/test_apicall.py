@@ -48,8 +48,4 @@ def test_get_similar_style():
         assert data['max ibu'].max() <= 40
 
 
-def test_bad_country_filter():
-        # Just a dummy creation for function call
-        data = pd.DataFrame.from_dict(
-            get_most_similar_beers('Donnybrook Stout', n_beers=8))
-        assert filter_bad_countries(data) == []
+
