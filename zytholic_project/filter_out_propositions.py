@@ -27,3 +27,14 @@ def filter_bad_abv(dataframe: pd.DataFrame, abv: float) -> list:
         bad_index_abv = dataframe[dataframe["abv"] > abv]
         bad_index_abv = list(bad_index_abv.index)
     return bad_index_abv
+
+
+def list_bad_ibu_abv_country(dataframe, abv, ibu, input_country):
+    """
+    Returns all the beer indexes that should be ignored based on user inputs.
+    """
+    bad_index_ibu = filter_bad_ibu(dataframe, ibu)
+    bad_index_abv = filter_bad_abv(dataframe, abv)
+    bad_idx_countries = filter_bad_countries(dataframe, input_country)
+    # concatenates list and keeps unique elements
+    return set(bad_index_abv + bad_index_ibu + bad_idx_countries)
