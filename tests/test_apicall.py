@@ -1,6 +1,7 @@
-from zytholic_project.apicall import bad_country_filter, check_name, get_most_similar_beers
+from zytholic_project.apicall import check_name, get_most_similar_beers
 from zytholic_project.apicall import get_most_similar_beers_ibu_abv
 from zytholic_project.apicall import get_similar_style 
+from zytholic_project.filter_out_propositions import filter_bad_countries
 import pandas as pd
 
 
@@ -47,8 +48,4 @@ def test_get_similar_style():
         assert data['max ibu'].max() <= 40
 
 
-def test_bad_country_filter():
-        # Just a dummy creation for function call
-        data = pd.DataFrame.from_dict(
-            get_most_similar_beers('Donnybrook Stout', n_beers=8))
-        assert bad_country_filter(data) == []
+
