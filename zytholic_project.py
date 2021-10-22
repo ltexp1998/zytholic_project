@@ -29,6 +29,9 @@ def set_background(png_file):
     page_bg_img = '''
     <style>
     .stApp {
+    max-width : 800px;
+    margin-left: auto;
+    margin-right: auto;
     background-image : url("data:image/png;base64,%s");
     background-size : cover;
     background-color : rgba(0,0,255,0.3)
@@ -45,9 +48,14 @@ st.markdown('<p style="visibility : hidden">Image credit : https://urlz.fr/gm4x"
 ################# CSS custom section #################
 
 CSS = """
+stApp {}
+#MainMenu {visibility : hidden;}
+footer {visibility : hidden;}
+body {background-color : black;}
+.st-c8 {color : black}
 .reportview-container {background : rgba(0, 0, 0, 0.6);}
 .stSlider, .css-1iyw2u1, .css-1djdyxw{color : white;}
-.css-2y0inq, .css-1d0tddh  {color : white}
+.css-2y0inq, .css-1d0tddh {color : white}
 div[role="listbox"] ul {background-color :black;}
 div[role="radiogroup"] {flex-flow : row; justify-content : center; }
 div[role="radiogroup"]  .st-cc {font-size : 2em; color : white;}
@@ -59,6 +67,7 @@ div[data-testid="stTickBarMax"] {font-size : 1.5em}
 div[data-baseweb="base-input"] .st-dg {font-size : 2em}
 div[data-baseweb="select"] .st-el {font-size : 2em}
 .css-2y0inq {font-size : 2em}
+.edgvbvh6 {}
 
 .api_return {font-weight: bold; color : white; font-size : 1.2em}
 .border2 {color : white; padding : 0.5em}
