@@ -1,4 +1,3 @@
-from numpy.lib.arraysetops import isin
 from zytholic_project.userspace import User
 
 stef = User('stef',

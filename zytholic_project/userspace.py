@@ -1,5 +1,3 @@
-from numpy.random.mtrand import choice, rand
-
 DB_ID = [0]
 
 class User:
@@ -17,16 +15,17 @@ class User:
         self.liked = set()
         
     def create_user_id(self):
+        """Take the last user ID and add one"""
         max_db = DB_ID[-1]
         user_id = max_db + 1
         DB_ID.append(user_id)
         return user_id
     
     def add_liked_beer(self, beer_name: str):
-        """Add beer name to the set"""
+        """Add beer name to the set of liked beer"""
         self.liked.add(beer_name)
         
-    def unlike_beer(self, beer_name):
+    def unlike_beer(self, beer_name: str):
         """Remove a beer from the liked list"""
         #if beer_name in self.liked:
         self.liked.discard(beer_name)
