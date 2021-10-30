@@ -32,6 +32,7 @@ class BaseModel:
         dfbeer = pd.read_csv("raw_data/beers_style_renamed.csv")
         dfbeer["name"] = dfbeer["name"].astype(str).str.title()
         dftop = pd.read_csv("raw_data/top_beer_info_style_renamed.csv")
+        dftop.columns = dftop.columns.str.lower()
         dftop["name"] = dftop["name"].astype(str).str.title()
 
         # read correspondance brewery
