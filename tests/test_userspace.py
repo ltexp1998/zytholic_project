@@ -1,4 +1,6 @@
 from zytholic_project.userspace import User
+import pandas as pd
+import os
 
 stef = User('stef',
             'stef@choisirsabiere.fr',
@@ -25,3 +27,17 @@ def test_add_liked_beer():
 def test_unlike_beer():
     stef.unlike_beer("Westmalle")
     assert "Westmalle" not in stef.liked
+    
+def test_save_user_to_db():
+    stef.save_to_db()
+    database = pd.read_csv('assets/mock_db.csv')
+    assert database.shape == (1, 5)
+    assert database.name[0] == 'stef'
+    
+    alix.save_to_db()
+    database = pd.read_csv('assets/mock_db.csv')
+    assert database.shape == (2, 5)
+    assert database.name.to_list() == ['stef', 'alix']
+    
+    # Cleaning mock DB after test
+    os.remove('assets/mock_db.csv')

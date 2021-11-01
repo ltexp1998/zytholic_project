@@ -1,3 +1,6 @@
+import pandas as pd
+import os.path
+
 DB_ID = [0]
 
 class User:
@@ -29,4 +32,24 @@ class User:
         """Remove a beer from the liked list"""
         #if beer_name in self.liked:
         self.liked.discard(beer_name)
+        
+    def save_to_db(self):
+        user_data = pd.DataFrame({
+                'user_id': [self.id],
+                'email' :[self.email],
+                'name': [self.name],
+                'age' : [self.age],
+                'liked_beers' :[self.liked]
+            })
+        
+        # Add user to dabatase if file exists otherwise creates it
+        if os.path.isfile('assets/mock_db.csv'):
+            database = pd.read_csv('assets/mock_db.csv')
+            database = database.append(user_data)
+            database.to_csv('assets/mock_db.csv', index=False)
+            
+        else:
+            user_data.to_csv('assets/mock_db.csv', index=False)
 
+# if __name__ == '__main__':
+#     pass
