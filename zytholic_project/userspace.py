@@ -2,6 +2,8 @@ import pandas as pd
 import os.path
 
 DB_ID = [0]
+beer_list = pd.read_csv('assets/liste.csv', usecols=['name'])
+beer_list = beer_list['name'].to_list()
 
 class User:
     """
@@ -26,7 +28,10 @@ class User:
     
     def add_liked_beer(self, beer_name: str):
         """Add beer name to the set of liked beer"""
-        self.liked.add(beer_name)
+        if beer_name in beer_list:
+            self.liked.add(beer_name)
+        else:
+            raise UnknownBeer(f'{beer_name} is not in the database')
         
     def unlike_beer(self, beer_name: str):
         """Remove a beer from the liked list"""
@@ -50,6 +55,10 @@ class User:
             
         else:
             user_data.to_csv('assets/mock_db.csv', index=False)
+
+
+class UnknownBeer(Exception):
+    pass
 
 # if __name__ == '__main__':
 #     pass
