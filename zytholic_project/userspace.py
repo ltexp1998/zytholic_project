@@ -35,8 +35,11 @@ class User:
         
     def unlike_beer(self, beer_name: str):
         """Remove a beer from the liked list"""
-        #if beer_name in self.liked:
-        self.liked.discard(beer_name)
+        if beer_name in self.liked:
+            self.liked.discard(beer_name)
+        else:
+            raise UnknownBeer(f'{beer_name} is not in the liked list')
+        
         
     def save_to_db(self):
         user_data = pd.DataFrame({
@@ -58,6 +61,7 @@ class User:
 
 
 class UnknownBeer(Exception):
+    """Custom class for wrong beer name"""
     pass
 
 # if __name__ == '__main__':

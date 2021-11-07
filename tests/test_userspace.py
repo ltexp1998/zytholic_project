@@ -35,6 +35,12 @@ def test_unlike_beer():
     stef.unlike_beer("Amber")
     assert "Amber" not in stef.liked
     
+     # Beer not in the liked list
+    try:
+        stef.unlike_beer("Pepoodo") 
+    except UnknownBeer as err:
+        assert str(err) == "Pepoodo is not in the liked list"
+    
 def test_save_user_to_db():
     stef.save_to_db()
     database = pd.read_csv('assets/mock_db.csv')
