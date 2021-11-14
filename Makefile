@@ -11,7 +11,7 @@ black:
 	@black scripts/* zytholic_project/*.py
 
 test:
-	@coverage run -m pytest tests/test*.py
+	@coverage run -m pytest 
 	@coverage report -m --omit="${VIRTUAL_ENV}/lib/python*"
 
 ftest:
