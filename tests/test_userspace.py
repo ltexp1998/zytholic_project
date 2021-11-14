@@ -1,6 +1,7 @@
 from zytholic_project.userspace import User, UnknownBeer
 import pandas as pd
 import os
+import pytest
 
 stef = User('stef',
             'stef@choisirsabiere.fr',
@@ -26,20 +27,16 @@ def test_add_liked_beer():
     assert "Amber" in stef.liked
     
     # Beer not in the database
-    try:
+    with pytest.raises(UnknownBeer):
         stef.add_liked_beer("Pepoodo") 
-    except UnknownBeer as err:
-        assert str(err) == "Pepoodo is not in the database"
     
 def test_unlike_beer():
     stef.unlike_beer("Amber")
     assert "Amber" not in stef.liked
     
      # Beer not in the liked list
-    try:
+    with pytest.raises(UnknownBeer):
         stef.unlike_beer("Pepoodo") 
-    except UnknownBeer as err:
-        assert str(err) == "Pepoodo is not in the liked list"
     
 def test_save_user_to_db():
     stef.save_to_db()
